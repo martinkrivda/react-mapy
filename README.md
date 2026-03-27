@@ -13,8 +13,7 @@
 
 It is designed for frontend applications that want a small, strongly typed map API without pulling in framework-specific UI choices. The library ships with composable Leaflet wrappers, Mapy.com provider support, GPX and georeferenced asset utilities, historical heatmaps, colored stream tracks, and Storybook-backed documentation.
 
-Star the repository on GitHub if the library is useful for your project:
-[github.com/martinkrivda/react-mapy](https://github.com/martinkrivda/react-mapy)
+⭐ Star us on GitHub — it motivates us a lot!
 
 If you want to support ongoing maintenance, you can sponsor development here:
 [github.com/sponsors/martinkrivda](https://github.com/sponsors/martinkrivda)
@@ -478,21 +477,13 @@ Default local URLs:
 
 Issues and pull requests are welcome.
 
-When contributing:
+See [CONTRIBUTING.md](./CONTRIBUTING.md) for:
 
-- keep provider abstractions generic
-- keep Mapy.com-specific behavior isolated under `src/providers/mapy/`
-- prefer pure utilities first, then thin React wrappers, then presets
-- update tests, Storybook, and README when public behavior changes
-- keep YAML files on the `.yaml` extension only
-
-Recommended development flow:
-
-1. Create a feature branch.
-2. Make the change.
-3. Run `pnpm lint`, `pnpm typecheck`, `pnpm test`, and `pnpm build`.
-4. If docs or stories changed, also run `pnpm build-storybook`.
-5. Open a pull request.
+- branch naming and Conventional Commit rules
+- Changesets-based versioning and release flow
+- semver guidance for `patch`, `minor`, and `major`
+- pull request expectations and validation commands
+- project Code of Conduct
 
 ## Commits
 
