@@ -19,8 +19,6 @@ jobs:
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
-        with:
-          version: 10
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -28,6 +26,9 @@ jobs:
           cache: pnpm
           node-version-file: .nvmrc
           registry-url: https://registry.npmjs.org
+
+      - name: Setup npm for trusted publishing
+        run: npm install --global npm@11.6.2
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
