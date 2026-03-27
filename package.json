@@ -5,7 +5,7 @@
   "license": "MIT",
   "author": "Martin Křivda",
   "type": "module",
-  "packageManager": "pnpm@10.20.0",
+  "packageManager": "pnpm@10.29.2",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -55,6 +55,9 @@
   "sideEffects": false,
   "publishConfig": {
     "access": "public"
+  },
+  "engines": {
+    "pnpm": ">=10.20.0 <11"
   },
   "keywords": [
     "react",
