@@ -13,8 +13,7 @@
 
 It is designed for frontend applications that want a small, strongly typed map API without pulling in framework-specific UI choices. The library ships with composable Leaflet wrappers, Mapy.com provider support, GPX and georeferenced asset utilities, historical heatmaps, colored stream tracks, and Storybook-backed documentation.
 
-Star the repository on GitHub if the library is useful for your project:
-[github.com/martinkrivda/react-mapy](https://github.com/martinkrivda/react-mapy)
+⭐ Star us on GitHub — it motivates us a lot!
 
 If you want to support ongoing maintenance, you can sponsor development here:
 [github.com/sponsors/martinkrivda](https://github.com/sponsors/martinkrivda)
