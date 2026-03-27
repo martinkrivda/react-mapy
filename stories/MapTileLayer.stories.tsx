@@ -55,7 +55,6 @@ function MapyProxyTileLayerStory({
 
   return (
     <StoryFrame
-      note="This story keeps the Mapy.com API key off the frontend. For live preview in local Storybook, expose the same path from your backend or set `STORYBOOK_MAPY_PROXY_TARGET` and restart Storybook."
       note="This story keeps the Mapy.com API key off the frontend. For live preview in local Storybook, expose the same `/rest/v1/map/tiles/*` path from your backend or set `STORYBOOK_MAPY_PROXY_TARGET` and restart Storybook."
       summary="Use the same provider factory in proxy mode when your backend should fetch Mapy.com tiles and inject the private API key server-side."
       title="Mapy.com tile layer via backend proxy"
