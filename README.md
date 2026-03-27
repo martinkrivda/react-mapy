@@ -2,7 +2,7 @@
 
 [![CI](https://img.shields.io/github/actions/workflow/status/martinkrivda/react-mapy/ci.yaml?branch=main&label=CI)](https://github.com/martinkrivda/react-mapy/actions/workflows/ci.yaml)
 [![Node.js Version](https://img.shields.io/badge/node.js-22.20%20LTS-339933?logo=node.js&logoColor=white)](https://nodejs.org/)
-[![pnpm Version](https://img.shields.io/badge/pnpm-10.20.0-F69220?logo=pnpm&logoColor=white)](https://pnpm.io/)
+[![pnpm Version](https://img.shields.io/badge/pnpm-10.x-F69220?logo=pnpm&logoColor=white)](https://pnpm.io/)
 [![React](https://img.shields.io/badge/react-19-149ECA?logo=react&logoColor=white)](https://react.dev/)
 [![Leaflet](https://img.shields.io/badge/leaflet-1.9.4-199900?logo=leaflet&logoColor=white)](https://leafletjs.com/)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
@@ -58,7 +58,7 @@ test/           Vitest unit and component tests
 ## Requirements
 
 - Node.js version pinned in [`.nvmrc`](./.nvmrc): `22.20.0`
-- pnpm `10.20.0`
+- pnpm `>=10.20.0 <11` (recommended: `10.29.2`)
 
 Recommended setup:
 
@@ -66,7 +66,7 @@ Recommended setup:
 nvm install
 nvm use
 corepack enable
-corepack prepare pnpm@10.20.0 --activate
+corepack prepare pnpm@10.29.2 --activate
 pnpm -v
 ```
 
