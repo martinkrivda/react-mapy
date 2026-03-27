@@ -1,6 +1,6 @@
 {
   "name": "react-mapy",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "TypeScript React map primitives and presets powered by Leaflet, with Mapy.com as the default tile provider.",
   "license": "MIT",
   "author": "Martin Křivda",
