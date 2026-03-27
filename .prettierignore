@@ -1,8 +1,14 @@
-package.json
 node_modules/
 dist/
 coverage/
+storybook-static/
+playground/dist/
+.cache/
+.npm-cache/
+.storybook-home/
+.vite/
 *.log
+*.tsbuildinfo
 package-lock.json
 yarn.lock
 pnpm-lock.yaml

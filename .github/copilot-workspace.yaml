@@ -1,0 +1,110 @@
+version: 1
+project:
+  name: react-mapy
+  type: typescript-react-library
+  description: >
+    Reusable React 19 map component library powered by Leaflet, with Mapy.com as
+    the default tile provider and a small, strongly typed public API.
+  package_manager: pnpm
+  build_tool: tsup
+  dev_tools:
+    - vite
+    - storybook
+    - vitest
+    - eslint
+    - prettier
+  release:
+    versioning: changesets
+    ci: github-actions
+
+runtime:
+  module_format:
+    - esm
+    - cjs
+  peer_dependencies:
+    - react
+    - react-dom
+    - leaflet
+  constraints:
+    - Keep runtime dependencies minimal.
+    - Do not bundle React or Leaflet into library output.
+    - Keep styling framework-agnostic.
+    - Do not introduce Tailwind or shadcn as runtime requirements.
+
+architecture:
+  source_root: src
+  layers:
+    core: Shared types, geometry helpers, provider contracts, heatmap and track utilities.
+    providers: Provider implementations. Mapy-specific behavior must stay isolated here.
+    leaflet: Low-level React bindings around Leaflet primitives and layers.
+    parsers: Pure parsers and georeferencing helpers with no React or browser dependency.
+    presets: Higher-level reusable layers such as GPX, stream tracks, legends, and presets.
+  boundaries:
+    - Do not leak Mapy.com-specific behavior into core or generic Leaflet wrappers.
+    - Keep parser logic testable without DOM access.
+    - Prefer pure utilities first, then thin React wrappers, then presets.
+
+public_api:
+  root_exports:
+    - LeafletMap
+    - MapTileLayer
+    - MarkerLayer
+    - PolylineLayer
+    - GeoJsonLayer
+    - HeatmapLayer
+    - GeoreferencedImageOverlay
+    - GpxTrackLayer
+    - StreamTrackLayer
+    - parseGpx
+    - createMapyProvider
+    - buildTrackHeatmapPoints
+    - zipStreamToPoints
+  subpath_exports:
+    - react-mapy/core
+    - react-mapy/leaflet
+    - react-mapy/parsers
+    - react-mapy/presets
+    - react-mapy/providers/mapy
+
+repository_conventions:
+  code_style:
+    language: TypeScript
+    tsconfig: strict
+    yaml_extension: .yaml
+  implementation_rules:
+    - Prefer composition over monolithic components.
+    - Use stable explicit types and JSDoc for public exports.
+    - Keep public API small and tree-shakeable.
+    - Expose flexible props and children-based composition where useful.
+    - Keep default styling minimal and host-app friendly.
+  documentation_rules:
+    - Update README for user-facing features.
+    - Add or update Storybook stories for new layers and presets.
+    - Keep examples aligned with the current public API.
+
+validation:
+  required_before_merge:
+    - pnpm typecheck
+    - pnpm test
+    - pnpm build
+  when_docs_or_stories_change:
+    - pnpm build-storybook
+  preferred_local_flows:
+    - pnpm dev
+    - pnpm storybook
+
+testing_priorities:
+  - Test pure logic before DOM-heavy behavior.
+  - Add focused component tests for Leaflet wrappers and overlays.
+  - Validate provider behavior separately from rendering concerns.
+
+ai_guidance:
+  references:
+    - .github/copilot-instructions.md
+    - AGENTS.md
+    - CLAUDE.md
+    - docs/agent-context/mapycom.md
+  change_checklist:
+    - Keep provider abstractions generic.
+    - Preserve backward-compatible exports where reasonable.
+    - Update tests, Storybook, and README when public behavior changes.

@@ -1,0 +1,55 @@
+version: 2
+updates:
+  - package-ecosystem: 'npm'
+    directory: '/'
+    schedule:
+      interval: 'weekly'
+      day: 'monday'
+      time: '08:00'
+      timezone: 'Europe/Prague'
+    open-pull-requests-limit: 8
+    rebase-strategy: 'auto'
+    versioning-strategy: 'increase-if-necessary'
+    commit-message:
+      prefix: 'deps'
+      include: 'scope'
+    groups:
+      production-dependencies:
+        dependency-type: 'production'
+      storybook:
+        patterns:
+          - '@storybook/*'
+          - 'storybook'
+      testing-and-quality:
+        patterns:
+          - '@testing-library/*'
+          - 'eslint'
+          - 'eslint-*'
+          - 'prettier'
+          - 'vitest'
+          - 'jsdom'
+      build-tooling:
+        patterns:
+          - '@changesets/*'
+          - '@types/*'
+          - '@vitejs/*'
+          - 'tsup'
+          - 'typescript'
+          - 'typescript-eslint'
+          - 'vite'
+          - 'rimraf'
+          - 'globals'
+          - 'husky'
+
+  - package-ecosystem: 'github-actions'
+    directory: '/'
+    schedule:
+      interval: 'weekly'
+      day: 'monday'
+      time: '08:30'
+      timezone: 'Europe/Prague'
+    open-pull-requests-limit: 4
+    rebase-strategy: 'auto'
+    commit-message:
+      prefix: 'ci'
+      include: 'scope'

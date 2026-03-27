@@ -1,30 +1,39 @@
-# 🚀 Node Modules
+# Dependencies
 node_modules/
-dist/
-package-lock.json
-yarn.lock
+.pnpm-store/
 
-# 🚀 Build Artifacts
+# Build outputs
+dist/
+coverage/
+storybook-static/
+playground/dist/
+
+# Tool caches
+.cache/
+.vite/
+.turbo/
+.storybook-home/
+*.tsbuildinfo
+
+# Environment files
+.env
+.env.*
+!.env.example
+!.env.*.example
+
+# Logs and package artifacts
 *.log
 *.tgz
 .npm/
-.cache/
-.DS_Store
-.env
-.env.local
-.env.development
-.env.production
-.env.test
+.npm-cache/
 
-# 🚀 TypeScript & Editor Files
-*.tsbuildinfo
+# Editor and OS files
+.DS_Store
 .vscode/
 .idea/
 *.swp
 *.swo
 
-# 🚀 Test Coverage & Debug Files
-coverage/
-jest/
-__tests__/
-__mocks__/
+# Other lockfiles
+package-lock.json
+yarn.lock

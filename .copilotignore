@@ -1,0 +1,32 @@
+# Sensitive environment files
+.env
+.env.local
+.env.*.local
+.env.development
+.env.production
+.env.test
+
+# Keep examples visible to Copilot
+!.env.example
+
+# Dependencies and package manager caches
+node_modules/
+.npm-cache/
+
+# Build outputs and reports
+dist/
+coverage/
+storybook-static/
+playground/dist/
+
+# Local Storybook/Copilot runtime caches
+.storybook-home/
+.cache/
+
+# Local IDE / OS noise
+.DS_Store
+.idea/
+.vscode/
+
+# Logs
+*.log

@@ -1,0 +1,114 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Docs/Introduction" />
+
+# `react-mapy`
+
+React map primitives and presets built on Leaflet, with Mapy.com as the default tile provider and a small, explicit public API.
+
+## Install
+
+```bash
+pnpm add react-mapy react react-dom leaflet
+```
+
+Import Leaflet's CSS once in the host application:
+
+```ts
+import 'leaflet/dist/leaflet.css';
+```
+
+## Quick start
+
+```tsx
+import { LeafletMap, MapTileLayer } from 'react-mapy';
+import { createMapyProvider } from 'react-mapy/providers/mapy';
+
+const provider = createMapyProvider({
+  apiKey: import.meta.env.VITE_MAPY_API_KEY,
+  variant: 'outdoor',
+});
+
+export function Example() {
+  return (
+    <LeafletMap center={{ lat: 50.0755, lng: 14.4378 }} zoom={13} style={{ height: 420 }}>
+      <MapTileLayer provider={provider} />
+    </LeafletMap>
+  );
+}
+```
+
+## Direct and proxied Mapy tiles
+
+`createMapyProvider(...)` supports both:
+
+- direct frontend tile requests using `apiKey`
+- backend-proxied tile requests using `proxy.urlTemplate`
+
+Use the proxy mode in production if you do not want to expose your Mapy.com API key in browser code.
+
+Storybook includes a dedicated example in `Leaflet/MapTileLayer -> MapyBackendProxyExample`.
+
+For local live preview without exposing the key to the browser, point Storybook at your backend service:
+
+```bash
+STORYBOOK_MAPY_PROXY_TARGET=http://localhost:3001 pnpm storybook
+```
+
+The recommended endpoint shape is:
+
+```text
+/rest/v1/map/tiles/{variant}/{tileSize}/{z}/{x}/{y}?lang={lang}
+```
+
+By default, Storybook will proxy `/rest/v1/map/*` to that backend target. You can override the prefix with `STORYBOOK_MAPY_PROXY_PATH_PREFIX` if your endpoint lives under a different path.
+
+## GPX preset
+
+```tsx
+import { GpxTrackLayer, LeafletMap, parseGpx } from 'react-mapy';
+
+const document = parseGpx(gpxXmlString);
+
+export function GpxExample() {
+  return (
+    <LeafletMap center={{ lat: 50.0755, lng: 14.4378 }} zoom={13} style={{ height: 420 }}>
+      <GpxTrackLayer track={document.tracks[0]} colorMode="pace" />
+    </LeafletMap>
+  );
+}
+```
+
+## Theme presets
+
+`LeafletMap` supports built-in presentation themes:
+
+- `mapy`
+- `dark`
+- `neutral`
+- `mapbox`
+
+These presets style the Leaflet surface, controls, popups, attribution, and raster tile treatment. They do not switch the underlying tile provider.
+
+## Georeferenced rasters
+
+`GeoreferencedImageOverlay` lets you place a browser-friendly raster above the map using either direct geographic bounds or `image + world file` metadata.
+
+The library currently focuses on the practical `PNG/JPG + pgw/jgw/tfw` workflow. GeoTIFF decoding is intentionally left outside the runtime bundle.
+
+## Heatmaps
+
+`HeatmapLayer` covers both common density overlays:
+
+- historical event locations below a current marker
+- historical route density below an active `StreamTrackLayer`
+
+Use `buildTrackHeatmapPoints(...)` to turn archived paths into a continuous heat surface that darkens where many past routes overlap.
+
+## Layer architecture
+
+- `core` exposes provider contracts, geometry helpers, and pace utilities.
+- `providers/mapy` isolates Mapy.com-specific tile URL building and capabilities.
+- `leaflet` contains React wrappers that manage Leaflet maps and layers.
+- `parsers` stays DOM-free so GPX and georeferenced asset parsing remain unit-testable.
+- `presets` packages higher-level defaults such as pace-colored GPX rendering.

@@ -1,16 +1,42 @@
 {
   "compilerOptions": {
-    "outDir": "dist",
-    "target": "ES6",
+    "target": "ES2022",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "module": "ESNext",
+    "moduleResolution": "Bundler",
     "jsx": "react-jsx",
-    "declaration": true,
-    "declarationMap": true,
-    "moduleResolution": "node",
+    "strict": true,
+    "noEmit": true,
+    "isolatedModules": true,
+    "verbatimModuleSyntax": true,
+    "useDefineForClassFields": true,
     "resolveJsonModule": true,
-    "allowSyntheticDefaultImports": true,
-    "importHelpers": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
+    "noFallthroughCasesInSwitch": true,
+    "paths": {
+      "react-mapy": ["./src/index.ts"],
+      "react-mapy/*": ["./src/*"]
+    },
+    "types": ["node", "vite/client", "vitest/globals"]
   },
-  "include": ["src"]
+  "include": [
+    ".storybook/**/*.ts",
+    ".storybook/**/*.tsx",
+    "playground/**/*.ts",
+    "playground/**/*.tsx",
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "stories/**/*.mdx",
+    "stories/**/*.ts",
+    "stories/**/*.tsx",
+    "test/**/*.ts",
+    "test/**/*.tsx",
+    "tsup.config.ts",
+    "vite.config.ts",
+    "vitest.config.ts"
+  ]
 }

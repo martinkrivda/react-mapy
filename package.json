@@ -1,55 +1,122 @@
 {
-  "name": "react-mapycz-leaflet",
-  "version": "0.1.1",
+  "name": "react-mapy",
+  "version": "0.1.0",
+  "description": "TypeScript React map primitives and presets powered by Leaflet, with Mapy.com as the default tile provider.",
+  "license": "MIT",
+  "author": "Martin Křivda",
   "type": "module",
-  "main": "dist/index.cjs.js",
-  "module": "dist/index.esm.js",
-  "types": "dist/index.d.ts",
-  "scripts": {
-    "test": "echo \"No tests defined\" && exit 0",
-    "build": "rollup -c",
-    "prepare": "npm run build",
-    "prepublishOnly": "npm test && npm run build"
+  "packageManager": "pnpm@10.20.0",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./core": {
+      "types": "./dist/core.d.ts",
+      "import": "./dist/core.js",
+      "require": "./dist/core.cjs"
+    },
+    "./leaflet": {
+      "types": "./dist/leaflet.d.ts",
+      "import": "./dist/leaflet.js",
+      "require": "./dist/leaflet.cjs"
+    },
+    "./parsers": {
+      "types": "./dist/parsers.d.ts",
+      "import": "./dist/parsers.js",
+      "require": "./dist/parsers.cjs"
+    },
+    "./presets": {
+      "types": "./dist/presets.d.ts",
+      "import": "./dist/presets.js",
+      "require": "./dist/presets.cjs"
+    },
+    "./providers/mapy": {
+      "types": "./dist/providers/mapy.d.ts",
+      "import": "./dist/providers/mapy.js",
+      "require": "./dist/providers/mapy.cjs"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "LICENSE",
+    "README.md"
+  ],
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
   },
   "keywords": [
     "react",
-    "leaflet",
-    "mapy.cz",
+    "react-library",
     "typescript",
-    "map",
-    "gis"
+    "leaflet",
+    "mapy",
+    "mapy.com",
+    "maps",
+    "gpx",
+    "geojson"
   ],
-  "author": "Martin Křivda",
-  "license": "MIT",
-  "description": "A React component library for integrating Mapy.cz tiles with Leaflet, using the Mapy.cz REST API.",
+  "scripts": {
+    "build": "tsup",
+    "build-storybook": "HOME=$PWD/.storybook-home STORYBOOK_DISABLE_TELEMETRY=1 CI=1 storybook build",
+    "changeset": "changeset",
+    "clean": "rimraf coverage dist storybook-static playground/dist",
+    "dev": "vite",
+    "format": "prettier --check .",
+    "format:write": "prettier --write .",
+    "lint": "eslint .",
+    "release": "changeset publish",
+    "storybook": "HOME=$PWD/.storybook-home STORYBOOK_DISABLE_TELEMETRY=1 storybook dev -p 6006",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit",
+    "version-packages": "changeset version",
+    "prepare": "husky"
+  },
   "peerDependencies": {
+    "leaflet": "^1.9.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },
   "dependencies": {
-    "leaflet": "^1.9.4",
-    "react-leaflet": "^5.0.0",
-    "tslib": "^2.8.1"
+    "fast-xml-parser": "^5.5.9",
+    "simpleheat": "^0.4.0"
   },
   "devDependencies": {
-    "@rollup/plugin-commonjs": "^28.0.2",
-    "@rollup/plugin-json": "^6.1.0",
-    "@rollup/plugin-node-resolve": "^16.0.0",
-    "@rollup/plugin-typescript": "^12.1.2",
-    "@types/leaflet": "^1.9.16",
-    "@types/react": "^19.0.8",
-    "prettier": "^3.5.0",
-    "rollup": "^4.34.6",
-    "rollup-plugin-peer-deps-external": "^2.2.4",
-    "rollup-plugin-postcss": "^4.0.2",
-    "typescript": "^5.7.3"
-  },
-  "files": [
-    "dist",
-    "README.md",
-    "package.json"
-  ],
-  "publishConfig": {
-    "access": "public"
+    "@changesets/cli": "^2.30.0",
+    "@eslint/js": "^10.0.1",
+    "@storybook/addon-docs": "10.3.3",
+    "@storybook/react": "10.3.3",
+    "@storybook/react-vite": "10.3.3",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
+    "@testing-library/user-event": "^14.6.1",
+    "@types/geojson": "^7946.0.16",
+    "@types/leaflet": "^1.9.21",
+    "@types/node": "^25.5.0",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^6.0.1",
+    "eslint": "^10.1.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "globals": "^17.4.0",
+    "husky": "^9.1.7",
+    "jsdom": "^29.0.1",
+    "leaflet": "^1.9.4",
+    "prettier": "^3.8.1",
+    "rimraf": "^6.1.3",
+    "storybook": "10.3.3",
+    "tsup": "^8.5.1",
+    "typescript": "^6.0.2",
+    "typescript-eslint": "^8.57.2",
+    "vite": "^8.0.3",
+    "vitest": "^4.1.2"
   }
 }

@@ -1,6 +1,15 @@
+printWidth: 100
 singleQuote: true
-trailingComma: "all"
+semi: true
+trailingComma: all
+arrowParens: always
+endOfLine: lf
 overrides:
+  - files:
+      - "*.md"
+      - "*.mdx"
+    options:
+      proseWrap: preserve
   - files: "bin/*.js"
     options:
-      trailingComma: "es5"
+      trailingComma: es5
