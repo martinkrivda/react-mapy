@@ -79,6 +79,7 @@
     "format": "prettier --check .",
     "format:write": "prettier --write .",
     "lint": "eslint .",
+    "prepack": "pnpm build",
     "release": "changeset publish",
     "storybook": "HOME=$PWD/.storybook-home STORYBOOK_DISABLE_TELEMETRY=1 storybook dev -p 6006",
     "test": "vitest run",
