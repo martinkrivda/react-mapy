@@ -14,7 +14,11 @@ import { toLatLngTuple } from '../core/geometry';
 import type { GeoPointLike } from '../core/types';
 import { useLeafletMap } from './context';
 import { runWhenMapReady } from './lifecycle';
-import { markerPresets, type MarkerPreset } from './markerPresets';
+import {
+  markerPresets,
+  type MarkerColorScheme,
+  type MarkerPreset,
+} from './markerPresets';
 
 export type MarkerIconSize = number | readonly [width: number, height: number];
 
@@ -24,6 +28,7 @@ export type MarkerIconSize = number | readonly [width: number, height: number];
 export interface MarkerCustomIcon {
   anchor?: readonly [x: number, y: number];
   className?: string;
+  colorScheme?: MarkerColorScheme;
   component?: ComponentType<Record<string, unknown>>;
   componentProps?: Record<string, unknown>;
   content?: ReactNode;
@@ -179,10 +184,13 @@ function buildAssetIconHtml(
 function buildCustomMarkerIcon(icon: MarkerCustomIcon) {
   const preset = icon.preset ? markerPresets[icon.preset] : undefined;
   const size = normalizeIconSize(icon.size ?? preset?.size);
+  const presetAssetSrc =
+    (icon.colorScheme ? preset?.assetSrcByColorScheme?.[icon.colorScheme] : undefined) ??
+    preset?.assetSrc;
   const html =
     icon.html ??
     (icon.svg ? normalizeSvgMarkup(icon.svg, size) : null) ??
-    (preset?.assetSrc ? buildAssetIconHtml(preset.assetSrc, size) : null) ??
+    (presetAssetSrc ? buildAssetIconHtml(presetAssetSrc, size) : null) ??
     (preset?.svg ? normalizeSvgMarkup(preset.svg, size) : null) ??
     renderReactMarkerContent(icon, size);
 

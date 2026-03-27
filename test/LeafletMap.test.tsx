@@ -205,6 +205,7 @@ import {
   MarkerLayer,
   StreamTrackLayer,
 } from '../src';
+import { markerPresets } from '../src/leaflet';
 import { createMapyProvider } from '../src/providers/mapy';
 
 describe('Leaflet React bindings', () => {
@@ -502,5 +503,35 @@ describe('Leaflet React bindings', () => {
 
     expect(divIconOptions?.html).toContain('<img');
     expect(divIconOptions?.html).toContain('react-mapy-marker-icon__asset');
+    expect(divIconOptions?.html).toContain('data:image/svg+xml');
+    expect(divIconOptions?.html).toContain(markerPresets.ofeed.assetSrc ?? '');
+  });
+
+  it('renders the dark color scheme for the built-in ofeed marker preset', async () => {
+    render(
+      <LeafletMap center={{ lat: 50.0755, lng: 14.4378 }} zoom={13}>
+        <MarkerLayer
+          customIcon={{
+            colorScheme: 'dark',
+            preset: 'ofeed',
+          }}
+          position={{ lat: 50.0755, lng: 14.4378 }}
+        />
+      </LeafletMap>,
+    );
+
+    await waitFor(() => {
+      expect(leafletMocks.divIconMock).toHaveBeenCalled();
+    });
+
+    const divIconOptions = leafletMocks.divIconMock.mock.calls[0]?.[0] as
+      | {
+          html?: string;
+        }
+      | undefined;
+
+    expect(divIconOptions?.html).toContain(
+      markerPresets.ofeed.assetSrcByColorScheme?.dark ?? '',
+    );
   });
 });

@@ -82,6 +82,7 @@ export const CustomSvgMarker: Story = {
 export const OfeedPresetMarker: Story = {
   args: {
     customIcon: {
+      colorScheme: 'light',
       preset: 'ofeed',
       size: [40, 60],
     },
@@ -95,6 +96,29 @@ export const OfeedPresetMarker: Story = {
       title="ofeed preset marker"
     >
       <LeafletMap center={pragueCenter} zoom={13}>
+        <MarkerLayer {...args} />
+      </LeafletMap>
+    </StoryFrame>
+  ),
+};
+
+export const OfeedPresetMarkerDark: Story = {
+  args: {
+    customIcon: {
+      colorScheme: 'dark',
+      preset: 'ofeed',
+      size: [40, 60],
+    },
+    popupText: 'Built-in ofeed preset marker for dark map surfaces.',
+    position: pragueCenter,
+    tooltipText: 'ofeed dark',
+  },
+  render: (args) => (
+    <StoryFrame
+      summary="Preset markers can also select a dark color scheme, which is useful when the host application renders the map in a dark presentation theme."
+      title="ofeed preset marker for dark mode"
+    >
+      <LeafletMap center={pragueCenter} theme="dark" zoom={13}>
         <MarkerLayer {...args} />
       </LeafletMap>
     </StoryFrame>

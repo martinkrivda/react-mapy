@@ -191,6 +191,7 @@ This library intentionally supports both modes:
 - React-rendered SVG content
 - Lucide-style icon components
 - built-in presets such as `ofeed`
+- preset `colorScheme` selection for light and dark surfaces
 
 Custom React SVG:
 
@@ -237,6 +238,21 @@ Built-in `ofeed` marker preset:
 ```tsx
 <MarkerLayer
   customIcon={{
+    colorScheme: 'light',
+    preset: 'ofeed',
+    size: [40, 60],
+  }}
+  position={{ lat: 50.0755, lng: 14.4378 }}
+  tooltipText="ofeed location"
+/>
+```
+
+Dark-mode preset variant:
+
+```tsx
+<MarkerLayer
+  customIcon={{
+    colorScheme: 'dark',
     preset: 'ofeed',
     size: [40, 60],
   }}

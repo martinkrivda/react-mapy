@@ -79,6 +79,7 @@ export type {
   LeafletMapProps,
   MapTileLayerProps,
   MarkerCustomIcon,
+  MarkerColorScheme,
   MarkerIconSize,
   MarkerLayerProps,
   MarkerPreset,

@@ -13,6 +13,9 @@ export default defineConfig({
   },
   external: ['leaflet', 'react', 'react-dom'],
   format: ['esm', 'cjs'],
+  loader: {
+    '.svg': 'dataurl',
+  },
   skipNodeModulesBundle: true,
   sourcemap: true,
   splitting: false,

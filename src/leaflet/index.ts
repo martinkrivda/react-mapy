@@ -14,7 +14,11 @@ export type { MapTileLayerProps } from './MapTileLayer';
 export { MarkerLayer } from './MarkerLayer';
 export type { MarkerCustomIcon, MarkerIconSize, MarkerLayerProps } from './MarkerLayer';
 export { markerPresets } from './markerPresets';
-export type { MarkerPreset, MarkerPresetDefinition } from './markerPresets';
+export type {
+  MarkerColorScheme,
+  MarkerPreset,
+  MarkerPresetDefinition,
+} from './markerPresets';
 export { PolylineLayer } from './PolylineLayer';
 export type { PolylineLayerProps } from './PolylineLayer';
 export { useLeafletMap } from './context';
