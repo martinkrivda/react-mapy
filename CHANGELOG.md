@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.2.0
+
+### Minor Changes
+
+### minor
+
+- marker clustering
+
 ## 0.1.5
 
 ### Patch Changes
