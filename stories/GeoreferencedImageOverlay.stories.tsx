@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 
 import { GeoreferencedImageOverlay, LeafletMap, MapTileLayer } from '../src';
 import { createMapyProvider } from '../src/providers/mapy';

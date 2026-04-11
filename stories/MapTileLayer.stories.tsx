@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 
 import { LeafletMap, MapTileLayer } from '../src';
 import { createMapyProvider, type MapyVariant } from '../src/providers/mapy';

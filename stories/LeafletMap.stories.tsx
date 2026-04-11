@@ -1,6 +1,7 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 
 import {
+  FitToData,
   LeafletMap,
   MarkerLayer,
   MapTileLayer,
@@ -8,7 +9,7 @@ import {
   type MapThemePreset,
 } from '../src';
 import { createMapyProvider } from '../src/providers/mapy';
-import { pragueCenter } from './demoData';
+import { polylinePath, pragueCenter, sampleClusteredEvents, sampleGeoJson } from './demoData';
 import { storybookMapyApiKey } from './mapyApiKey';
 import { StoryFrame } from './StoryFrame';
 
@@ -243,4 +244,43 @@ export const CustomThemeExtension: CustomThemeStory = {
     },
   },
   render: (args) => <CustomThemeMapStory {...args} />,
+};
+
+export const FitToDataController: Story = {
+  args: {
+    center: pragueCenter,
+    zoom: 13,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Use `FitToData` when the host screen combines markers, paths, and GeoJSON overlays and you want one explicit viewport controller rather than repeating `fitBounds` behavior inside every layer.',
+      },
+    },
+  },
+  render: (args) => (
+    <StoryFrame
+      note="This example merges explicit points, a path, and GeoJSON into one viewport decision."
+      summary="`FitToData` is a small controller component that computes merged bounds from mixed data sources and applies a single `map.fitBounds(...)` call."
+      title="Fit viewport to mixed map data"
+    >
+      <LeafletMap {...args}>
+        <FitToData
+          fitBoundsOptions={{ padding: [28, 28] }}
+          geoJson={sampleGeoJson}
+          paths={[polylinePath]}
+          points={sampleClusteredEvents.map((event) => event.position)}
+        />
+        {sampleClusteredEvents.slice(0, 3).map((event) => (
+          <MarkerLayer
+            key={event.id}
+            popupText={event.popupText}
+            position={event.position}
+            tooltipText={event.tooltipText}
+          />
+        ))}
+      </LeafletMap>
+    </StoryFrame>
+  ),
 };

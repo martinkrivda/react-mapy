@@ -120,3 +120,48 @@ export const historicalTrackPaths = [
 export const historicalTrackHeatmapPoints = buildTrackHeatmapPoints(historicalTrackPaths, {
   sampleStepMeters: 25,
 });
+
+export const sampleClusteredEvents = [
+  {
+    category: 'concert',
+    id: 'evt-1',
+    popupText: 'Morning concert setup',
+    position: { lat: 50.0755, lng: 14.4378 },
+    tooltipText: 'Concert',
+  },
+  {
+    category: 'conference',
+    id: 'evt-2',
+    popupText: 'Conference registration opens',
+    position: { lat: 50.0755, lng: 14.4378 },
+    tooltipText: 'Conference',
+  },
+  {
+    category: 'food',
+    id: 'evt-3',
+    popupText: 'Street food market',
+    position: { lat: 50.0755, lng: 14.4378 },
+    tooltipText: 'Food market',
+  },
+  {
+    category: 'exhibition',
+    id: 'evt-4',
+    popupText: 'Gallery opening',
+    position: { lat: 50.0762, lng: 14.4404 },
+    tooltipText: 'Exhibition',
+  },
+  {
+    category: 'workshop',
+    id: 'evt-5',
+    popupText: 'Design workshop',
+    position: { lat: 50.0762, lng: 14.4404 },
+    tooltipText: 'Workshop',
+  },
+  {
+    category: 'meetup',
+    id: 'evt-6',
+    popupText: 'Community meetup',
+    position: { lat: 50.0738, lng: 14.4341 },
+    tooltipText: 'Meetup',
+  },
+] as const;

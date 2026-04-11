@@ -113,6 +113,23 @@ Import Leaflet CSS once in your host app:
 import 'leaflet/dist/leaflet.css';
 ```
 
+If you want clustered markers for repeated event locations, install the optional cluster plugin too:
+
+```bash
+pnpm add leaflet.markercluster
+```
+
+Then load the plugin and its stylesheet once in your host app:
+
+```ts
+import 'leaflet/dist/leaflet.css';
+import 'leaflet.markercluster/dist/MarkerCluster.css';
+import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
+import { loadLeafletMarkerCluster } from 'react-mapy';
+
+await loadLeafletMarkerCluster();
+```
+
 ### Minimal Map
 
 ```tsx
@@ -215,6 +232,62 @@ This library intentionally supports both modes:
 - Lucide-style icon components
 - built-in presets such as `ofeed`
 - preset `colorScheme` selection for light and dark surfaces
+
+### Marker Clustering
+
+Use `MarkerClusterLayer` when several events can share the same coordinates and you want them grouped until the map is zoomed in.
+
+```tsx
+import 'leaflet.markercluster/dist/MarkerCluster.css';
+import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
+
+import { LeafletMap, MarkerClusterLayer, MapTileLayer, loadLeafletMarkerCluster } from 'react-mapy';
+import { createMapyProvider } from 'react-mapy/providers/mapy';
+
+await loadLeafletMarkerCluster();
+
+const provider = createMapyProvider({
+  apiKey: import.meta.env.VITE_MAPY_API_KEY,
+  variant: 'basic',
+});
+
+const events = [
+  { id: 'evt-1', popupText: 'Morning concert setup', position: { lat: 50.0755, lng: 14.4378 } },
+  { id: 'evt-2', popupText: 'Conference registration opens', position: { lat: 50.0755, lng: 14.4378 } },
+  { id: 'evt-3', popupText: 'Gallery opening', position: { lat: 50.0762, lng: 14.4404 } },
+];
+
+export function ClusteredEventsExample() {
+  return (
+    <LeafletMap center={{ lat: 50.0755, lng: 14.4378 }} zoom={13} style={{ height: 420 }}>
+      <MapTileLayer provider={provider} />
+      <MarkerClusterLayer
+        clusterOptions={{
+          disableClusteringAtZoom: 17,
+          showCoverageOnHover: false,
+        }}
+        markers={events}
+      />
+    </LeafletMap>
+  );
+}
+```
+
+Each entry in `markers` still keeps its own popup, tooltip, custom icon, and `markerOptions`. If the plugin is not loaded, `MarkerClusterLayer` throws a clear runtime error by design.
+
+`customIcon.size` can also be responsive to the current zoom level:
+
+```tsx
+<MarkerLayer
+  customIcon={{
+    preset: 'ofeed',
+    size: (zoom) => (zoom >= 15 ? [40, 60] : [24, 36]),
+  }}
+  position={{ lat: 50.0755, lng: 14.4378 }}
+/>
+```
+
+This is useful for branded markers that should stay smaller on overview zoom levels and expand only when the user zooms in.
 
 Custom React SVG:
 

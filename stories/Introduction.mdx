@@ -18,6 +18,23 @@ Import Leaflet's CSS once in the host application:
 import 'leaflet/dist/leaflet.css';
 ```
 
+For clustered event markers, add the optional plugin:
+
+```bash
+pnpm add leaflet.markercluster
+```
+
+And load it once in the host app together with its CSS:
+
+```ts
+import 'leaflet/dist/leaflet.css';
+import 'leaflet.markercluster/dist/MarkerCluster.css';
+import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
+import { loadLeafletMarkerCluster } from 'react-mapy';
+
+await loadLeafletMarkerCluster();
+```
+
 ## Quick start
 
 ```tsx
@@ -104,6 +121,108 @@ The library currently focuses on the practical `PNG/JPG + pgw/jgw/tfw` workflow.
 - historical route density below an active `StreamTrackLayer`
 
 Use `buildTrackHeatmapPoints(...)` to turn archived paths into a continuous heat surface that darkens where many past routes overlap.
+
+## Clustered events
+
+`MarkerClusterLayer` is intended for event feeds or venue schedules where several records can share one map point.
+
+```tsx
+import 'leaflet.markercluster/dist/MarkerCluster.css';
+import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
+
+import { LeafletMap, MarkerClusterLayer, loadLeafletMarkerCluster } from 'react-mapy';
+
+await loadLeafletMarkerCluster();
+
+const events = [
+  { id: 'evt-1', popupText: 'Morning concert setup', position: { lat: 50.0755, lng: 14.4378 } },
+  { id: 'evt-2', popupText: 'Conference registration opens', position: { lat: 50.0755, lng: 14.4378 } },
+  { id: 'evt-3', popupText: 'Gallery opening', position: { lat: 50.0762, lng: 14.4404 } },
+];
+
+export function ClusterExample() {
+  return (
+    <LeafletMap center={{ lat: 50.0755, lng: 14.4378 }} zoom={13} style={{ height: 420 }}>
+      <MarkerClusterLayer markers={events} />
+    </LeafletMap>
+  );
+}
+```
+
+Storybook includes a dedicated example in `Leaflet/MarkerClusterLayer -> ClusteredEvents`.
+
+For feed-oriented map screens, Storybook also includes:
+
+- `Leaflet/MarkerClusterLayer -> Custom cluster icons with visible items callback`
+
+That example shows how to:
+
+- render branded cluster badges through `clusterIcon`
+- derive a synchronized result list through `onVisibleItemsChange`
+
+## Responsive marker size
+
+`MarkerLayer` and `MarkerClusterLayer` both support zoom-aware icon sizing through `customIcon.size`.
+
+```tsx
+<MarkerLayer
+  customIcon={{
+    preset: 'ofeed',
+    size: (zoom) => (zoom >= 15 ? [40, 60] : [24, 36]),
+  }}
+  position={{ lat: 50.0755, lng: 14.4378 }}
+/>
+```
+
+Use this when a branded marker should stay visually quieter on overview zooms and only grow at closer inspection levels.
+
+Storybook includes:
+
+- `Leaflet/MarkerLayer -> Responsive marker size by zoom`
+
+## React popup content
+
+`MarkerLayer` and clustered marker entries can render static React markup into Leaflet popups and tooltips.
+
+```tsx
+<MarkerLayer
+  popupContent={
+    <div>
+      <strong>Prague city center</strong>
+      <span>Static React popup content</span>
+    </div>
+  }
+  position={{ lat: 50.0755, lng: 14.4378 }}
+  tooltipContent={<span>React tooltip content</span>}
+/>
+```
+
+This is useful when plain strings stop being enough, but you still want to keep the runtime lightweight.
+
+Storybook includes:
+
+- `Leaflet/MarkerLayer -> React popup and tooltip content`
+
+## Fit To Data
+
+`FitToData` is a small controller component that computes merged bounds from mixed inputs and applies one `fitBounds` call.
+
+```tsx
+<LeafletMap center={pragueCenter} zoom={13} style={{ height: 420 }}>
+  <FitToData
+    geoJson={featureCollection}
+    paths={[trackPoints]}
+    points={events.map((event) => event.position)}
+    fitBoundsOptions={{ padding: [28, 28] }}
+  />
+</LeafletMap>
+```
+
+Use this when the host screen combines markers, tracks, and overlays but should make just one explicit viewport decision.
+
+Storybook includes:
+
+- `Leaflet/LeafletMap -> Fit viewport to mixed map data`
 
 ## Layer architecture
 

@@ -1,4 +1,5 @@
 export { computeBounds, haversineDistanceMeters, toGeoPoint, toLatLngTuple } from './geometry';
+export { computeDataBounds } from './viewport';
 export {
   buildTrackHeatmapPoints,
   DEFAULT_HEATMAP_GRADIENT,
@@ -66,3 +67,4 @@ export type {
   TimeValue,
   TimedGeoPoint,
 } from './types';
+export type { FitToDataInput } from './viewport';
