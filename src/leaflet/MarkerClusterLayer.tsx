@@ -1,10 +1,10 @@
 import { divIcon, type DivIcon, type Layer, type LayerGroup, type Marker, type MarkerOptions } from 'leaflet';
-import * as Leaflet from 'leaflet';
 import { useEffect } from 'react';
 
 import { computeBounds, toLatLngTuple } from '../core';
 import { useLeafletMap } from './context';
 import { runWhenMapReady } from './lifecycle';
+import { getMarkerClusterFactory } from './markerClusterRuntime';
 import {
   buildCustomMarkerIcon,
   createLeafletMarker,
@@ -37,10 +37,6 @@ interface MarkerClusterLike {
   getChildCount(): number;
 }
 
-interface LeafletMarkerClusterRuntime {
-  markerClusterGroup?: (options?: MarkerClusterGroupOptions) => MarkerClusterGroupLike;
-}
-
 export interface MarkerClusterIconContext {
   count: number;
   markers: readonly ClusterMarkerDefinition[];
@@ -67,10 +63,6 @@ export interface MarkerClusterLayerProps {
   markerOptions?: MarkerOptions;
   onVisibleItemsChange?: (markers: readonly ClusterMarkerDefinition[]) => void;
   sharedIcon?: MarkerCustomIcon;
-}
-
-function getMarkerClusterFactory() {
-  return (Leaflet as typeof Leaflet & LeafletMarkerClusterRuntime).markerClusterGroup;
 }
 
 function resolveClusterIcon(
@@ -109,7 +101,9 @@ export function MarkerClusterLayer({
   const zoom = useLeafletMapZoom();
 
   useEffect(() => {
-    const createClusterGroup = getMarkerClusterFactory();
+    const createClusterGroup = getMarkerClusterFactory() as
+      | ((options?: MarkerClusterGroupOptions) => MarkerClusterGroupLike)
+      | undefined;
 
     if (!createClusterGroup) {
       throw new Error(
