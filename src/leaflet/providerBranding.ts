@@ -1,9 +1,4 @@
-import {
-  Control,
-  DomEvent,
-  DomUtil,
-  type Map as LeafletMapInstance,
-} from 'leaflet';
+import { Control, DomEvent, DomUtil, type Map as LeafletMapInstance } from 'leaflet';
 
 import type { TileProvider, TileProviderBranding } from '../core/providers';
 
@@ -96,16 +91,8 @@ function createBrandingControl(branding: TileProviderBranding): Control {
 
   brandingControl.onAdd = () => {
     const container = DomUtil.create('div', 'react-mapy-provider-branding');
-    const link = DomUtil.create(
-      'a',
-      'react-mapy-provider-branding__link',
-      container,
-    );
-    const image = DomUtil.create(
-      'img',
-      'react-mapy-provider-branding__image',
-      link,
-    );
+    const link = DomUtil.create('a', 'react-mapy-provider-branding__link', container);
+    const image = DomUtil.create('img', 'react-mapy-provider-branding__image', link);
 
     link.href = branding.href;
     link.target = branding.target ?? '_blank';

@@ -33,10 +33,12 @@ The Matrix Routing API calculates distances and travel times for a matrix of sta
 ## Matrix Size Limits
 
 The maximum size of the matrix is limited to 100:
+
 - **NxM matrix**: `starts.length × ends.length ≤ 100` (e.g., 1×100, 10×10, 2×50)
 - **NxN matrix**: `starts.length² ≤ 100` (when `ends` is not specified, calculates all starts to all starts)
 
 **Distance Limit:**
+
 - Maximum distance between two points is limited to 500 km by air
 
 ## Response Structure
@@ -106,6 +108,7 @@ curl "https://api.mapy.com/v1/routing/matrix-m?apikey=YOUR_API_KEY&starts=14.437
 ```
 
 This represents:
+
 - `matrix[0][0]`: Route from `starts[0]` to `ends[0]` = 2351 meters, 189 seconds
 - `matrix[0][1]`: Route from `starts[0]` to `ends[1]` = Error (route not found)
 - `matrix[1][0]`: Route from `starts[1]` to `ends[0]` = 2456 meters, 195 seconds
@@ -119,9 +122,11 @@ This represents:
 - **422 Validation Error**: Invalid parameters (missing required parameters, invalid coordinates, matrix size exceeds limit)
 
 **Rate Limits:**
+
 - Maximum 30 requests per second per API key
 
 **Limitations:**
+
 - Maximum matrix size: 100 (starts.length × ends.length ≤ 100 or starts.length² ≤ 100 for NxN)
 - Maximum distance between points: 500 km by air
 - Maximum number of starts: 100
@@ -144,5 +149,3 @@ For detailed error responses and rate limits, see the [OpenAPI specification](ht
 - [Forward Geocoding](forward-geocoding.md)
 - [URL Route](../url-mapy/route.md)
 - [REST API Documentation](README.md)
-
-

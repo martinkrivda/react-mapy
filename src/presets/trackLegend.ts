@@ -115,21 +115,9 @@ export function retainTrackLegendBadge(
 
   control.onAdd = () => {
     const container = DomUtil.create('div', 'react-mapy-track-legend');
-    const label = DomUtil.create(
-      'div',
-      'react-mapy-track-legend__label',
-      container,
-    );
-    const scale = DomUtil.create(
-      'div',
-      'react-mapy-track-legend__scale',
-      container,
-    );
-    const range = DomUtil.create(
-      'div',
-      'react-mapy-track-legend__range',
-      container,
-    );
+    const label = DomUtil.create('div', 'react-mapy-track-legend__label', container);
+    const scale = DomUtil.create('div', 'react-mapy-track-legend__scale', container);
+    const range = DomUtil.create('div', 'react-mapy-track-legend__range', container);
 
     label.textContent = badge.label;
     scale.style.background = badge.gradient;

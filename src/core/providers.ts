@@ -24,11 +24,7 @@ export interface TileLayerConfig {
 /**
  * Supported map control anchor positions for provider branding.
  */
-export type TileProviderBrandingPosition =
-  | 'bottomleft'
-  | 'bottomright'
-  | 'topleft'
-  | 'topright';
+export type TileProviderBrandingPosition = 'bottomleft' | 'bottomright' | 'topleft' | 'topright';
 
 /**
  * Optional provider branding metadata required by some tile sources.

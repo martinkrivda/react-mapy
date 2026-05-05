@@ -92,11 +92,9 @@ const leafletMocks = vi.hoisted(() => {
     this.onAdd?.(map);
     return this;
   });
-  ControlMock.prototype.remove = vi.fn(function remove(
-    this: {
-      onAdd?: (map: unknown) => unknown;
-    },
-  ) {
+  ControlMock.prototype.remove = vi.fn(function remove(this: {
+    onAdd?: (map: unknown) => unknown;
+  }) {
     return this;
   });
   const leafletMapInstance = {
@@ -155,16 +153,18 @@ const leafletMocks = vi.hoisted(() => {
   const imageOverlayMock = vi.fn(() => createLayer());
   const tileLayerMock = vi.fn(() => createLayer());
   const markerMock = vi.fn(() => createLayer());
-  const markerClusterGroupMock = vi.fn((options?: { iconCreateFunction?: (cluster: unknown) => unknown }) => {
-    const group = {
-      ...createLayer(),
-      addLayer: vi.fn(() => group),
-      clearLayers: vi.fn(() => group),
-      options,
-    };
+  const markerClusterGroupMock = vi.fn(
+    (options?: { iconCreateFunction?: (cluster: unknown) => unknown }) => {
+      const group = {
+        ...createLayer(),
+        addLayer: vi.fn(() => group),
+        clearLayers: vi.fn(() => group),
+        options,
+      };
 
-    return group;
-  });
+      return group;
+    },
+  );
   const polylineMock = vi.fn(() => createLayer());
   const geoJsonMock = vi.fn(() => createLayer());
   const featureGroupMock = vi.fn(() => createLayer());
@@ -305,7 +305,12 @@ describe('Leaflet React bindings', () => {
   it('creates a Leaflet map instance and calls whenReady', () => {
     const handleReady = vi.fn();
     const { unmount, getByTestId } = render(
-      <LeafletMap center={{ lat: 50.0755, lng: 14.4378 }} data-testid="map-root" whenReady={handleReady} zoom={13} />,
+      <LeafletMap
+        center={{ lat: 50.0755, lng: 14.4378 }}
+        data-testid="map-root"
+        whenReady={handleReady}
+        zoom={13}
+      />,
     );
 
     expect(leafletMocks.mapMock).toHaveBeenCalledWith(getByTestId('map-root'), expect.any(Object));
@@ -319,7 +324,12 @@ describe('Leaflet React bindings', () => {
 
   it('applies preset theme classes and CSS variables to the map root', () => {
     const { getByTestId } = render(
-      <LeafletMap center={{ lat: 50.0755, lng: 14.4378 }} data-testid="map-root" theme="dark" zoom={13} />,
+      <LeafletMap
+        center={{ lat: 50.0755, lng: 14.4378 }}
+        data-testid="map-root"
+        theme="dark"
+        zoom={13}
+      />,
     );
 
     const root = getByTestId('map-root');
@@ -456,21 +466,9 @@ describe('Leaflet React bindings', () => {
 
     expect(clusterGroup?.addLayer).toHaveBeenCalledTimes(3);
     expect(clusterGroup?.addTo).toHaveBeenCalledWith(leafletMocks.leafletMapInstance);
-    expect(leafletMocks.markerMock).toHaveBeenNthCalledWith(
-      1,
-      [50.0755, 14.4378],
-      undefined,
-    );
-    expect(leafletMocks.markerMock).toHaveBeenNthCalledWith(
-      2,
-      [50.0755, 14.4378],
-      undefined,
-    );
-    expect(leafletMocks.markerMock).toHaveBeenNthCalledWith(
-      3,
-      [50.0762, 14.4404],
-      undefined,
-    );
+    expect(leafletMocks.markerMock).toHaveBeenNthCalledWith(1, [50.0755, 14.4378], undefined);
+    expect(leafletMocks.markerMock).toHaveBeenNthCalledWith(2, [50.0755, 14.4378], undefined);
+    expect(leafletMocks.markerMock).toHaveBeenNthCalledWith(3, [50.0762, 14.4404], undefined);
   });
 
   it('supports custom cluster icon rendering and visible-items callbacks', async () => {
@@ -671,11 +669,7 @@ describe('Leaflet React bindings', () => {
       );
     });
 
-    expect(leafletMocks.domCreate).toHaveBeenNthCalledWith(
-      1,
-      'div',
-      'react-mapy-track-legend',
-    );
+    expect(leafletMocks.domCreate).toHaveBeenNthCalledWith(1, 'div', 'react-mapy-track-legend');
   });
 
   it('renders a pace legend badge for GpxTrackLayer in pace mode', async () => {
@@ -859,8 +853,6 @@ describe('Leaflet React bindings', () => {
         }
       | undefined;
 
-    expect(divIconOptions?.html).toContain(
-      markerPresets.ofeed.assetSrcByColorScheme?.dark ?? '',
-    );
+    expect(divIconOptions?.html).toContain(markerPresets.ofeed.assetSrcByColorScheme?.dark ?? '');
   });
 });

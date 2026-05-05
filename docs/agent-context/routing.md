@@ -70,7 +70,11 @@ When using `format=geojson` (default), the response structure is:
     "type": "Feature",
     "geometry": {
       "type": "LineString",
-      "coordinates": [[14.4378, 50.0755], [14.4400, 50.0780], [14.4500, 50.0800]]
+      "coordinates": [
+        [14.4378, 50.0755],
+        [14.44, 50.078],
+        [14.45, 50.08]
+      ]
     },
     "properties": {}
   },
@@ -92,7 +96,7 @@ When using `format=geojson` (default), the response structure is:
       "restricted": false
     },
     {
-      "originalPosition": [14.4500, 50.0800],
+      "originalPosition": [14.45, 50.08],
       "mappedPosition": [14.4501, 50.0801],
       "snapDistance": 8,
       "restricted": true,
@@ -105,15 +109,18 @@ When using `format=geojson` (default), the response structure is:
 **Important:** The `geometry` field contains a complete GeoJSON Feature object, not just the geometry. The actual LineString coordinates are nested in `geometry.geometry.coordinates`. When using mapping libraries like Leaflet, you can pass `data.geometry` directly to GeoJSON parsers.
 
 **Example parsing in JavaScript:**
+
 ```javascript
-fetch(`https://api.mapy.com/v1/routing/route?apikey=YOUR_API_KEY&start=14.4378,50.0755&end=16.6068,49.1951&routeType=car_fast&format=geojson`)
-  .then(response => response.json())
-  .then(data => {
+fetch(
+  `https://api.mapy.com/v1/routing/route?apikey=YOUR_API_KEY&start=14.4378,50.0755&end=16.6068,49.1951&routeType=car_fast&format=geojson`,
+)
+  .then((response) => response.json())
+  .then((data) => {
     // data.geometry is already a GeoJSON Feature object
     const routeLayer = L.geoJSON(data.geometry, {
-      style: { color: '#2196F3', weight: 5, opacity: 0.7 }
+      style: { color: '#2196F3', weight: 5, opacity: 0.7 },
     }).addTo(map);
-    
+
     // Get route info
     const distance = data.length / 1000; // km
     const duration = data.duration / 60; // minutes
@@ -177,78 +184,81 @@ This example demonstrates how to calculate and display a route from Prague to Br
 ```html
 <!DOCTYPE html>
 <html>
-<head>
+  <head>
     <meta charset="utf-8" />
     <title>Route from Prague to Brno</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <style>
-        #map { height: 500px; }
+      #map {
+        height: 500px;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div id="map"></div>
     <script>
-        const API_KEY = 'YOUR_API_KEY';
-        const map = L.map('map').setView([50.0755, 14.4378], 8);
+      const API_KEY = 'YOUR_API_KEY';
+      const map = L.map('map').setView([50.0755, 14.4378], 8);
 
-        L.tileLayer(`https://api.mapy.com/v1/maptiles/basic/256/{z}/{x}/{y}?apikey=${API_KEY}`, {
-            attribution: '<a href="https://api.mapy.com/copyright" target="_blank">&copy; Seznam.cz a.s. a další</a>',
-        }).addTo(map);
+      L.tileLayer(`https://api.mapy.com/v1/maptiles/basic/256/{z}/{x}/{y}?apikey=${API_KEY}`, {
+        attribution:
+          '<a href="https://api.mapy.com/copyright" target="_blank">&copy; Seznam.cz a.s. a další</a>',
+      }).addTo(map);
 
-        const LogoControl = L.Control.extend({
-            options: { position: 'bottomleft' },
-            onAdd: function (map) {
-                const container = L.DomUtil.create('div');
-                const link = L.DomUtil.create('a', '', container);
-                link.setAttribute('href', 'http://mapy.com/');
-                link.setAttribute('target', '_blank');
-                link.innerHTML = '<img src="https://api.mapy.com/img/api/logo.svg" />';
-                L.DomEvent.disableClickPropagation(link);
-                return container;
-            },
-        });
-        new LogoControl().addTo(map);
+      const LogoControl = L.Control.extend({
+        options: { position: 'bottomleft' },
+        onAdd: function (map) {
+          const container = L.DomUtil.create('div');
+          const link = L.DomUtil.create('a', '', container);
+          link.setAttribute('href', 'http://mapy.com/');
+          link.setAttribute('target', '_blank');
+          link.innerHTML = '<img src="https://api.mapy.com/img/api/logo.svg" />';
+          L.DomEvent.disableClickPropagation(link);
+          return container;
+        },
+      });
+      new LogoControl().addTo(map);
 
-        const coordsStart = [14.4378, 50.0755]; // Prague
-        const coordsEnd = [16.6068, 49.1951];   // Brno
+      const coordsStart = [14.4378, 50.0755]; // Prague
+      const coordsEnd = [16.6068, 49.1951]; // Brno
 
-        async function calculateRoute() {
-            const url = new URL('https://api.mapy.com/v1/routing/route');
-            url.searchParams.set('apikey', API_KEY);
-            url.searchParams.set('start', coordsStart.join(','));
-            url.searchParams.set('end', coordsEnd.join(','));
-            url.searchParams.set('routeType', 'car_fast');
-            url.searchParams.set('format', 'geojson');
+      async function calculateRoute() {
+        const url = new URL('https://api.mapy.com/v1/routing/route');
+        url.searchParams.set('apikey', API_KEY);
+        url.searchParams.set('start', coordsStart.join(','));
+        url.searchParams.set('end', coordsEnd.join(','));
+        url.searchParams.set('routeType', 'car_fast');
+        url.searchParams.set('format', 'geojson');
 
-            const response = await fetch(url.toString());
-            if (!response.ok) {
-                console.error('Error calculating route');
-                return null;
-            }
-
-            const data = await response.json();
-            
-            const routeLayer = L.geoJSON(data.geometry, {
-                style: {
-                    color: '#2196F3',
-                    weight: 5,
-                    opacity: 0.7
-                }
-            }).addTo(map);
-
-            map.fitBounds(routeLayer.getBounds());
-
-            const distance = (data.length / 1000).toFixed(2);
-            const duration = Math.floor(data.duration / 60);
-            console.log(`Route: ${distance} km, Duration: ${duration} min`);
-
-            return data;
+        const response = await fetch(url.toString());
+        if (!response.ok) {
+          console.error('Error calculating route');
+          return null;
         }
 
-        map.whenReady(calculateRoute);
+        const data = await response.json();
+
+        const routeLayer = L.geoJSON(data.geometry, {
+          style: {
+            color: '#2196F3',
+            weight: 5,
+            opacity: 0.7,
+          },
+        }).addTo(map);
+
+        map.fitBounds(routeLayer.getBounds());
+
+        const distance = (data.length / 1000).toFixed(2);
+        const duration = Math.floor(data.duration / 60);
+        console.log(`Route: ${distance} km, Duration: ${duration} min`);
+
+        return data;
+      }
+
+      map.whenReady(calculateRoute);
     </script>
-</body>
+  </body>
 </html>
 ```
 
@@ -280,9 +290,11 @@ If it is not possible to plan the route for the selected mode of transport, the 
 - **422 Validation Error**: Invalid parameters (missing required parameters, invalid coordinates, invalid parameter values)
 
 **Rate Limits:**
+
 - Maximum 30 requests per second per API key
 
 **Limitations:**
+
 - Maximum 15 waypoints per route
 - Coordinates must be valid WGS84 format (longitude: -180 to 180, latitude: -90 to 90)
 
@@ -303,6 +315,3 @@ For detailed error responses and rate limits, see the [OpenAPI specification](ht
 - [Forward Geocoding](forward-geocoding.md)
 - [URL Route](../url-mapy/route.md)
 - [REST API Documentation](README.md)
-
-
-

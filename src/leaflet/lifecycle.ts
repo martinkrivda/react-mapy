@@ -14,10 +14,7 @@ export function isMapUsable(map: LeafletMapInstance): boolean {
 /**
  * Defers work until the map is ready and still attached to the DOM.
  */
-export function runWhenMapReady(
-  map: LeafletMapInstance,
-  callback: () => void,
-): () => void {
+export function runWhenMapReady(map: LeafletMapInstance, callback: () => void): () => void {
   let disposed = false;
 
   map.whenReady(() => {

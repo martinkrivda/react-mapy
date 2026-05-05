@@ -16,12 +16,13 @@ The Elevation API returns elevation data for given coordinates. It can return el
 
 - `apikey` (string) — Your API key for authentication ([How to get API key](getting-access.md)) (alternative: X-Mapy-Api-Key header)
 - `positions` (array, required) — Up to 256 position coordinates. Each position is represented by a pair of float numbers, denoting longitude and latitude respectively, separated by a comma.
-  
+
   Multiple positions can be provided in two ways:
   1. As a semicolon-separated list: `positions=14.4009400,50.0711000;14.3951303,50.0704094`
   2. As an exploded array: `positions=14.4009400,50.0711000&positions=14.3951303,50.0704094`
-  
+
   **Note:** The order is important: first number is longitude, second is latitude.
+
 - `lang` (string, optional) — Preferred language (does not affect this function). Supported values: cs, de, el, en, es, fr, it, nl, pl, pt, ru, sk, tr, uk (default: cs)
 
 > Complete parameter list available in Swagger / OpenAPI above.
@@ -45,6 +46,7 @@ The API returns an array with elevation data for each input position:
 ```
 
 **Elevation values:**
+
 - Elevation is returned in meters above sea level
 - If elevation information is not available for a given position:
   - For a single position query: API returns 404 Not Found error
@@ -72,116 +74,128 @@ This example demonstrates how to calculate a route, get elevation data for it, a
 ```html
 <!DOCTYPE html>
 <html>
-<head>
+  <head>
     <meta charset="utf-8" />
     <title>Route Elevation Profile</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <!-- leaflet-elevation -->
-    <link rel="stylesheet" href="https://unpkg.com/@raruto/leaflet-elevation/dist/leaflet-elevation.css" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/@raruto/leaflet-elevation/dist/leaflet-elevation.css"
+    />
     <script src="https://unpkg.com/@raruto/leaflet-elevation/dist/leaflet-elevation.js"></script>
     <style>
-        #map { height: 500px; }
+      #map {
+        height: 500px;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div id="map"></div>
     <script>
-        const API_KEY = 'YOUR_API_KEY';
-        const map = L.map('map').setView([50.6968506, 15.7378861], 13);
+      const API_KEY = 'YOUR_API_KEY';
+      const map = L.map('map').setView([50.6968506, 15.7378861], 13);
 
-        L.tileLayer(`https://api.mapy.com/v1/maptiles/basic/256/{z}/{x}/{y}?apikey=${API_KEY}`, {
-            attribution: '<a href="https://api.mapy.com/copyright" target="_blank">&copy; Seznam.cz a.s. a další</a>',
-        }).addTo(map);
+      L.tileLayer(`https://api.mapy.com/v1/maptiles/basic/256/{z}/{x}/{y}?apikey=${API_KEY}`, {
+        attribution:
+          '<a href="https://api.mapy.com/copyright" target="_blank">&copy; Seznam.cz a.s. a další</a>',
+      }).addTo(map);
 
-        const controlElevation = L.control.elevation({ height: 200 }).addTo(map);
+      const controlElevation = L.control.elevation({ height: 200 }).addTo(map);
 
-        const LogoControl = L.Control.extend({
-            options: { position: 'bottomleft' },
-            onAdd: function (map) {
-                const container = L.DomUtil.create('div');
-                const link = L.DomUtil.create('a', '', container);
-                link.setAttribute('href', 'http://mapy.com/');
-                link.setAttribute('target', '_blank');
-                link.innerHTML = '<img src="https://api.mapy.com/img/api/logo.svg" />';
-                L.DomEvent.disableClickPropagation(link);
-                return container;
+      const LogoControl = L.Control.extend({
+        options: { position: 'bottomleft' },
+        onAdd: function (map) {
+          const container = L.DomUtil.create('div');
+          const link = L.DomUtil.create('a', '', container);
+          link.setAttribute('href', 'http://mapy.com/');
+          link.setAttribute('target', '_blank');
+          link.innerHTML = '<img src="https://api.mapy.com/img/api/logo.svg" />';
+          L.DomEvent.disableClickPropagation(link);
+          return container;
+        },
+      });
+      new LogoControl().addTo(map);
+
+      const coordsStart = [15.7378861, 50.6968506];
+      const coordsEnd = [15.6070481, 50.7251503];
+
+      async function calculateRoute() {
+        const url = new URL('https://api.mapy.com/v1/routing/route');
+        url.searchParams.set('apikey', API_KEY);
+        url.searchParams.set('start', coordsStart.join(','));
+        url.searchParams.set('end', coordsEnd.join(','));
+        url.searchParams.set('routeType', 'foot_fast');
+        url.searchParams.set('format', 'geojson');
+
+        const response = await fetch(url.toString());
+        if (!response.ok) {
+          console.error('Error calculating route');
+          return null;
+        }
+
+        const data = await response.json();
+        L.geoJSON(data.geometry, { style: { color: '#2196F3', weight: 5 } }).addTo(map);
+        map.fitBounds(L.geoJSON(data.geometry).getBounds());
+        return data.geometry;
+      }
+
+      function selectPoints(geometry) {
+        const points = geometry.geometry.coordinates;
+        if (points.length <= 256) return points;
+        const step = Math.ceil(points.length / 256);
+        const selected = [];
+        for (let i = 0; i < points.length; i += step) {
+          selected.push(points[i]);
+        }
+        if (selected[selected.length - 1] !== points[points.length - 1]) {
+          selected.push(points[points.length - 1]);
+        }
+        return selected;
+      }
+
+      async function getElevationGeoJson(points) {
+        const positions = points.map((p) => p.join(',')).join(';');
+        const url = `https://api.mapy.com/v1/elevation?positions=${positions}&apikey=${API_KEY}`;
+        const response = await fetch(url);
+        if (!response.ok) {
+          console.error('Error getting elevation');
+          return null;
+        }
+        const data = await response.json();
+        return JSON.stringify({
+          type: 'FeatureCollection',
+          features: [
+            {
+              type: 'Feature',
+              geometry: {
+                type: 'LineString',
+                coordinates: data.items.map((item) => [
+                  item.position.lon,
+                  item.position.lat,
+                  item.elevation,
+                ]),
+              },
             },
+          ],
         });
-        new LogoControl().addTo(map);
+      }
 
-        const coordsStart = [15.7378861, 50.6968506];
-        const coordsEnd = [15.6070481, 50.7251503];
+      async function main() {
+        const routeGeometry = await calculateRoute();
+        if (!routeGeometry) return;
 
-        async function calculateRoute() {
-            const url = new URL('https://api.mapy.com/v1/routing/route');
-            url.searchParams.set('apikey', API_KEY);
-            url.searchParams.set('start', coordsStart.join(','));
-            url.searchParams.set('end', coordsEnd.join(','));
-            url.searchParams.set('routeType', 'foot_fast');
-            url.searchParams.set('format', 'geojson');
-
-            const response = await fetch(url.toString());
-            if (!response.ok) {
-                console.error('Error calculating route');
-                return null;
-            }
-
-            const data = await response.json();
-            L.geoJSON(data.geometry, { style: { color: '#2196F3', weight: 5 } }).addTo(map);
-            map.fitBounds(L.geoJSON(data.geometry).getBounds());
-            return data.geometry;
+        const points = selectPoints(routeGeometry);
+        const elevationGeoJson = await getElevationGeoJson(points);
+        if (elevationGeoJson) {
+          controlElevation.load(elevationGeoJson);
         }
+      }
 
-        function selectPoints(geometry) {
-            const points = geometry.geometry.coordinates;
-            if (points.length <= 256) return points;
-            const step = Math.ceil(points.length / 256);
-            const selected = [];
-            for (let i = 0; i < points.length; i += step) {
-                selected.push(points[i]);
-            }
-            if (selected[selected.length - 1] !== points[points.length - 1]) {
-                selected.push(points[points.length - 1]);
-            }
-            return selected;
-        }
-
-        async function getElevationGeoJson(points) {
-            const positions = points.map(p => p.join(',')).join(';');
-            const url = `https://api.mapy.com/v1/elevation?positions=${positions}&apikey=${API_KEY}`;
-            const response = await fetch(url);
-            if (!response.ok) {
-                console.error('Error getting elevation');
-                return null;
-            }
-            const data = await response.json();
-            return JSON.stringify({
-                type: "FeatureCollection",
-                features: [{
-                    type: "Feature",
-                    geometry: {
-                        type: "LineString",
-                        coordinates: data.items.map(item => [item.position.lon, item.position.lat, item.elevation])
-                    }
-                }]
-            });
-        }
-
-        async function main() {
-            const routeGeometry = await calculateRoute();
-            if (!routeGeometry) return;
-
-            const points = selectPoints(routeGeometry);
-            const elevationGeoJson = await getElevationGeoJson(points);
-            if (elevationGeoJson) {
-                controlElevation.load(elevationGeoJson);
-            }
-        }
-
-        map.whenReady(main);
+      map.whenReady(main);
     </script>
-</body>
+  </body>
 </html>
 ```
 
@@ -219,6 +233,7 @@ The model is a combination of several elevation models with varying accuracy. Fo
 - **429 Too Many Requests**: Rate limit exceeded
 
 **Limitations:**
+
 - Maximum 256 positions per request
 - Maximum rate limit: 30 requests per second per API key
 - Coverage: Almost entire world, except areas around North and South Poles
@@ -231,4 +246,3 @@ For detailed error responses and rate limits, see the [OpenAPI specification](ht
 - [Routing](routing.md)
 - [Matrix Routing](matrix-routing.md)
 - [REST API Documentation](README.md)
-

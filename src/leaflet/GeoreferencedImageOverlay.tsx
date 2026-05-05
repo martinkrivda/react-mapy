@@ -1,8 +1,4 @@
-import {
-  imageOverlay,
-  type FitBoundsOptions,
-  type ImageOverlayOptions,
-} from 'leaflet';
+import { imageOverlay, type FitBoundsOptions, type ImageOverlayOptions } from 'leaflet';
 import { useEffect, useMemo } from 'react';
 
 import { toLatLngTuple } from '../core/geometry';

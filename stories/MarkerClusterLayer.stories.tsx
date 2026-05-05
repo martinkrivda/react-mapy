@@ -140,9 +140,7 @@ function ClusterDashboardStory() {
                 markers={sampleClusteredEvents}
                 onVisibleItemsChange={(markers) => {
                   setVisibleIds(
-                    markers.flatMap((marker) =>
-                      typeof marker.id === 'string' ? [marker.id] : [],
-                    ),
+                    markers.flatMap((marker) => (typeof marker.id === 'string' ? [marker.id] : [])),
                   );
                 }}
               />

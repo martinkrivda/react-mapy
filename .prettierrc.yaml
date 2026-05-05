@@ -6,10 +6,10 @@ arrowParens: always
 endOfLine: lf
 overrides:
   - files:
-      - "*.md"
-      - "*.mdx"
+      - '*.md'
+      - '*.mdx'
     options:
       proseWrap: preserve
-  - files: "bin/*.js"
+  - files: 'bin/*.js'
     options:
       trailingComma: es5

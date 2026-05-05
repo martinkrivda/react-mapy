@@ -32,7 +32,12 @@ describe('computeDataBounds', () => {
         },
       ],
       geoJson,
-      paths: [[{ lat: 50.071, lng: 14.433 }, { lat: 50.08, lng: 14.441 }]],
+      paths: [
+        [
+          { lat: 50.071, lng: 14.433 },
+          { lat: 50.08, lng: 14.441 },
+        ],
+      ],
       points: [{ lat: 50.069, lng: 14.432 }],
     });
 

@@ -1,10 +1,5 @@
 import { haversineDistanceMeters, toGeoPoint } from './geometry';
-import type {
-  GeoPoint,
-  GeoPointLike,
-  StreamPoint,
-  TimeValue,
-} from './types';
+import type { GeoPoint, GeoPointLike, StreamPoint, TimeValue } from './types';
 
 /**
  * Options for converting speed into a display color.
@@ -47,10 +42,7 @@ export interface TrackSmoothingOptions {
 export interface SpeedSegment {
   color: string;
   end: GeoPoint;
-  positions: [
-    [lat: number, lng: number],
-    [lat: number, lng: number],
-  ];
+  positions: [[lat: number, lng: number], [lat: number, lng: number]];
   speedKmh?: number;
   start: GeoPoint;
 }
@@ -62,10 +54,7 @@ export interface ElevationSegment {
   color: string;
   elevationMeters?: number;
   end: GeoPoint;
-  positions: [
-    [lat: number, lng: number],
-    [lat: number, lng: number],
-  ];
+  positions: [[lat: number, lng: number], [lat: number, lng: number]];
   start: GeoPoint;
 }
 
@@ -76,10 +65,7 @@ export interface HeartRateSegment {
   color: string;
   end: GeoPoint;
   heartRateBpm?: number;
-  positions: [
-    [lat: number, lng: number],
-    [lat: number, lng: number],
-  ];
+  positions: [[lat: number, lng: number], [lat: number, lng: number]];
   start: GeoPoint;
 }
 
@@ -136,9 +122,7 @@ export function hslToHex(hue: number, saturation: number, lightness: number): st
   const green = channel(8);
   const blue = channel(4);
 
-  return `#${[red, green, blue]
-    .map((value) => value.toString(16).padStart(2, '0'))
-    .join('')}`;
+  return `#${[red, green, blue].map((value) => value.toString(16).padStart(2, '0')).join('')}`;
 }
 
 /**
@@ -148,11 +132,7 @@ export function speedToColor(
   speedKmh: number | undefined,
   options: SpeedColorOptions = {},
 ): string {
-  const {
-    fallbackColor = '#3388ff',
-    maxKmh = 20,
-    minKmh = 5,
-  } = options;
+  const { fallbackColor = '#3388ff', maxKmh = 20, minKmh = 5 } = options;
 
   if (!Number.isFinite(speedKmh)) {
     return fallbackColor;
@@ -172,11 +152,7 @@ export function elevationToColor(
   elevationMeters: number | undefined,
   options: ElevationColorOptions = {},
 ): string {
-  const {
-    fallbackColor = '#3388ff',
-    maxMeters = 1_500,
-    minMeters = 0,
-  } = options;
+  const { fallbackColor = '#3388ff', maxMeters = 1_500, minMeters = 0 } = options;
 
   if (!Number.isFinite(elevationMeters)) {
     return fallbackColor;
@@ -195,11 +171,7 @@ export function heartRateToColor(
   heartRateBpm: number | undefined,
   options: HeartRateColorOptions = {},
 ): string {
-  const {
-    fallbackColor = '#ef4444',
-    maxBpm = 190,
-    minBpm = 90,
-  } = options;
+  const { fallbackColor = '#ef4444', maxBpm = 190, minBpm = 90 } = options;
 
   if (!Number.isFinite(heartRateBpm)) {
     return fallbackColor;
@@ -315,12 +287,7 @@ export function buildSpeedSegments(
     return [];
   }
 
-  const {
-    fallbackColor = '#3388ff',
-    maxKmh = 20,
-    minKmh = 5,
-    smooth,
-  } = options;
+  const { fallbackColor = '#3388ff', maxKmh = 20, minKmh = 5, smooth } = options;
   const alpha = smooth?.alpha;
   const basePoints =
     alpha !== undefined && Number.isFinite(alpha) ? emaSmoothPoints(points, alpha) : [...points];
@@ -404,12 +371,7 @@ export function buildElevationSegments(
     return [];
   }
 
-  const {
-    fallbackColor = '#3388ff',
-    maxMeters = 1_500,
-    minMeters = 0,
-    smooth,
-  } = options;
+  const { fallbackColor = '#3388ff', maxMeters = 1_500, minMeters = 0, smooth } = options;
   const alpha = smooth?.alpha;
   const basePoints =
     alpha !== undefined && Number.isFinite(alpha) ? emaSmoothPoints(points, alpha) : [...points];
@@ -493,12 +455,7 @@ export function buildHeartRateSegments(
     return [];
   }
 
-  const {
-    fallbackColor = '#ef4444',
-    maxBpm = 190,
-    minBpm = 90,
-    smooth,
-  } = options;
+  const { fallbackColor = '#ef4444', maxBpm = 190, minBpm = 90, smooth } = options;
   const alpha = smooth?.alpha;
   const basePoints =
     alpha !== undefined && Number.isFinite(alpha) ? emaSmoothPoints(points, alpha) : [...points];

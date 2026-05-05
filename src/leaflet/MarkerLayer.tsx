@@ -4,10 +4,7 @@ import { useEffect } from 'react';
 
 import type { GeoPointLike } from '../core/types';
 import { runWhenMapReady } from './lifecycle';
-import {
-  createLeafletMarker,
-  type MarkerCustomIcon,
-} from './markerUtils';
+import { createLeafletMarker, type MarkerCustomIcon } from './markerUtils';
 import { useLeafletMap } from './context';
 import { useLeafletMapZoom } from './useLeafletMapZoom';
 
@@ -40,15 +37,18 @@ export function MarkerLayer({
   const zoom = useLeafletMapZoom();
 
   useEffect(() => {
-    const layer = createLeafletMarker({
-      ...(customIcon ? { customIcon } : {}),
-      ...(markerOptions ? { markerOptions } : {}),
-      ...(popupContent ? { popupContent } : {}),
-      ...(popupText ? { popupText } : {}),
-      position,
-      ...(tooltipContent ? { tooltipContent } : {}),
-      ...(tooltipText ? { tooltipText } : {}),
-    }, zoom);
+    const layer = createLeafletMarker(
+      {
+        ...(customIcon ? { customIcon } : {}),
+        ...(markerOptions ? { markerOptions } : {}),
+        ...(popupContent ? { popupContent } : {}),
+        ...(popupText ? { popupText } : {}),
+        position,
+        ...(tooltipContent ? { tooltipContent } : {}),
+        ...(tooltipText ? { tooltipText } : {}),
+      },
+      zoom,
+    );
 
     let mounted = false;
     const cancel = runWhenMapReady(map, () => {
@@ -63,7 +63,17 @@ export function MarkerLayer({
         layer.remove();
       }
     };
-  }, [customIcon, map, markerOptions, popupContent, popupText, position, tooltipContent, tooltipText, zoom]);
+  }, [
+    customIcon,
+    map,
+    markerOptions,
+    popupContent,
+    popupText,
+    position,
+    tooltipContent,
+    tooltipText,
+    zoom,
+  ]);
 
   return null;
 }

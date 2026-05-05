@@ -62,8 +62,7 @@ export function haversineDistanceMeters(from: GeoPointLike, to: GeoPointLike): n
   const deltaLng = toRadians(toPoint.lng - fromPoint.lng);
 
   const haversine =
-    Math.sin(deltaLat / 2) ** 2 +
-    Math.cos(lat1) * Math.cos(lat2) * Math.sin(deltaLng / 2) ** 2;
+    Math.sin(deltaLat / 2) ** 2 + Math.cos(lat1) * Math.cos(lat2) * Math.sin(deltaLng / 2) ** 2;
 
   return 2 * EARTH_RADIUS_METERS * Math.atan2(Math.sqrt(haversine), Math.sqrt(1 - haversine));
 }

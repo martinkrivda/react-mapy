@@ -1,4 +1,11 @@
-import { divIcon, type DivIcon, type Layer, type LayerGroup, type Marker, type MarkerOptions } from 'leaflet';
+import {
+  divIcon,
+  type DivIcon,
+  type Layer,
+  type LayerGroup,
+  type Marker,
+  type MarkerOptions,
+} from 'leaflet';
 import { useEffect } from 'react';
 
 import { computeBounds, toLatLngTuple } from '../core';
@@ -43,8 +50,9 @@ export interface MarkerClusterIconContext {
   zoom: number;
 }
 
-export type MarkerClusterIconRenderer =
-  | ((context: MarkerClusterIconContext) => DivIcon | MarkerCustomIcon | string);
+export type MarkerClusterIconRenderer = (
+  context: MarkerClusterIconContext,
+) => DivIcon | MarkerCustomIcon | string;
 
 /**
  * Marker entry used by MarkerClusterLayer.
@@ -65,10 +73,7 @@ export interface MarkerClusterLayerProps {
   sharedIcon?: MarkerCustomIcon;
 }
 
-function resolveClusterIcon(
-  result: DivIcon | MarkerCustomIcon | string,
-  zoom: number,
-): DivIcon {
+function resolveClusterIcon(result: DivIcon | MarkerCustomIcon | string, zoom: number): DivIcon {
   if (typeof result === 'string') {
     return divIcon({
       className: 'react-mapy-marker-cluster-icon',
@@ -80,7 +85,9 @@ function resolveClusterIcon(
     return result;
   }
 
-  return buildCustomMarkerIcon(result, zoom) ?? divIcon({ className: 'react-mapy-marker-cluster-icon' });
+  return (
+    buildCustomMarkerIcon(result, zoom) ?? divIcon({ className: 'react-mapy-marker-cluster-icon' })
+  );
 }
 
 /**
@@ -142,7 +149,8 @@ export function MarkerClusterLayer({
         ...markerDefinition.markerOptions,
       };
 
-      const markerLayer = createLeafletMarker({
+      const markerLayer = createLeafletMarker(
+        {
           ...(markerDefinition.customIcon
             ? { customIcon: markerDefinition.customIcon }
             : sharedIcon
@@ -158,7 +166,9 @@ export function MarkerClusterLayer({
             ? { tooltipContent: markerDefinition.tooltipContent }
             : {}),
           ...(markerDefinition.tooltipText ? { tooltipText: markerDefinition.tooltipText } : {}),
-        }, zoom);
+        },
+        zoom,
+      );
 
       metadataByMarker.set(markerLayer, markerDefinition);
       group.addLayer(markerLayer);
@@ -184,7 +194,9 @@ export function MarkerClusterLayer({
       emitVisibleItems();
     });
 
-    const groupedBounds = computeBounds(markers.map((markerDefinition) => markerDefinition.position));
+    const groupedBounds = computeBounds(
+      markers.map((markerDefinition) => markerDefinition.position),
+    );
 
     const handleViewportChange = () => {
       if (mounted) {
@@ -207,7 +219,16 @@ export function MarkerClusterLayer({
         group.remove();
       }
     };
-  }, [clusterIcon, clusterOptions, map, markerOptions, markers, onVisibleItemsChange, sharedIcon, zoom]);
+  }, [
+    clusterIcon,
+    clusterOptions,
+    map,
+    markerOptions,
+    markers,
+    onVisibleItemsChange,
+    sharedIcon,
+    zoom,
+  ]);
 
   return null;
 }

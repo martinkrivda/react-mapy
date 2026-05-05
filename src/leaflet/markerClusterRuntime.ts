@@ -23,7 +23,7 @@ export function getLeafletGlobalRuntime(): LeafletGlobalRuntime | undefined {
 }
 
 export function getMutableLeafletRuntime(): LeafletWithMarkerCluster {
-  return (LeafletDefault ?? LeafletNamespace);
+  return LeafletDefault ?? LeafletNamespace;
 }
 
 export function syncMarkerClusterApi(

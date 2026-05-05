@@ -4,14 +4,7 @@ import { LeafletMap, MarkerLayer } from '../src';
 import { StoryFrame } from './StoryFrame';
 import { pragueCenter } from './demoData';
 
-function PinIcon({
-  height = 36,
-  width = 36,
-}: {
-  height?: number;
-  size?: number;
-  width?: number;
-}) {
+function PinIcon({ height = 36, width = 36 }: { height?: number; size?: number; width?: number }) {
   return (
     <svg
       fill="none"

@@ -69,10 +69,13 @@ export default function App() {
           >
             react-mapy
           </p>
-          <h1 style={{ fontSize: '2.5rem', margin: '8px 0 12px' }}>Leaflet + Mapy.com playground</h1>
+          <h1 style={{ fontSize: '2.5rem', margin: '8px 0 12px' }}>
+            Leaflet + Mapy.com playground
+          </h1>
           <p style={{ color: '#334155', margin: 0, maxWidth: '60ch' }}>
-            The playground focuses on the public API. Add `VITE_MAPY_API_KEY` to preview live Mapy.com
-            tiles, or use the overlay-only view to iterate on GPX rendering and layer composition.
+            The playground focuses on the public API. Add `VITE_MAPY_API_KEY` to preview live
+            Mapy.com tiles, or use the overlay-only view to iterate on GPX rendering and layer
+            composition.
           </p>
         </header>
 

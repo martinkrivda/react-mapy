@@ -61,12 +61,16 @@ curl "https://api.mapy.com/v1/static/map?lon=15.608&lat=50.725&zoom=16&width=300
 
 ```html
 <!-- Simple tourist map -->
-<img src="https://api.mapy.com/v1/static/map?lon=15.608&lat=50.725&zoom=16&width=300&height=200&mapset=outdoor&apikey=YOUR_API_KEY" 
-     alt="Tourist map" />
+<img
+  src="https://api.mapy.com/v1/static/map?lon=15.608&lat=50.725&zoom=16&width=300&height=200&mapset=outdoor&apikey=YOUR_API_KEY"
+  alt="Tourist map"
+/>
 
 <!-- Aerial map with marker -->
-<img src="https://api.mapy.com/v1/static/map?lon=15.608&lat=50.725&zoom=16&width=300&height=200&mapset=aerial&markers=color:red;size:normal;label:A;15.608,50.725&apikey=YOUR_API_KEY" 
-     alt="Aerial map with marker" />
+<img
+  src="https://api.mapy.com/v1/static/map?lon=15.608&lat=50.725&zoom=16&width=300&height=200&mapset=aerial&markers=color:red;size:normal;label:A;15.608,50.725&apikey=YOUR_API_KEY"
+  alt="Aerial map with marker"
+/>
 ```
 
 ## Advanced Examples
@@ -76,8 +80,10 @@ curl "https://api.mapy.com/v1/static/map?lon=15.608&lat=50.725&zoom=16&width=300
 When no coordinates are provided, the map automatically adjusts to show all markers:
 
 ```html
-<img src="https://api.mapy.com/v1/static/map?width=300&height=200&mapset=winter&markers=color:red;size:normal;label:A;15.6051,50.7270&markers=color:green;size:normal;label:B;15.6111,50.7230&markers=color:blue;size:normal;label:C;15.6031,50.7220&apikey=YOUR_API_KEY" 
-     alt="Map with multiple markers" />
+<img
+  src="https://api.mapy.com/v1/static/map?width=300&height=200&mapset=winter&markers=color:red;size:normal;label:A;15.6051,50.7270&markers=color:green;size:normal;label:B;15.6111,50.7230&markers=color:blue;size:normal;label:C;15.6031,50.7220&apikey=YOUR_API_KEY"
+  alt="Map with multiple markers"
+/>
 ```
 
 ### Using Bounding Box
@@ -85,22 +91,28 @@ When no coordinates are provided, the map automatically adjusts to show all mark
 Specify `lon` and `lat` twice to define a bounding box:
 
 ```html
-<img src="https://api.mapy.com/v1/static/map?lon=12.09&lat=48.55&lon=18.87&lat=51.05&width=300&height=200&mapset=basic&apikey=YOUR_API_KEY" 
-     alt="Map of Czech Republic" />
+<img
+  src="https://api.mapy.com/v1/static/map?lon=12.09&lat=48.55&lon=18.87&lat=51.05&width=300&height=200&mapset=basic&apikey=YOUR_API_KEY"
+  alt="Map of Czech Republic"
+/>
 ```
 
 ### Adding Shapes
 
 ```html
-<img src="https://api.mapy.com/v1/static/map?width=500&height=450&mapset=aerial&shapes=color:red;path:[(15.6054,50.7260;15.6074,50.7260;15.6074,50.7240;15.6054,50.7240;15.6054,50.7260)]&shapes=color:blue;fill:%230000FF80;polygon:[(15.6112,50.7255;15.6132,50.7250;15.6152,50.7255;15.6112,50.7255)]&apikey=YOUR_API_KEY" 
-     alt="Map with shapes" />
+<img
+  src="https://api.mapy.com/v1/static/map?width=500&height=450&mapset=aerial&shapes=color:red;path:[(15.6054,50.7260;15.6074,50.7260;15.6074,50.7240;15.6054,50.7240;15.6054,50.7260)]&shapes=color:blue;fill:%230000FF80;polygon:[(15.6112,50.7255;15.6132,50.7250;15.6152,50.7255;15.6112,50.7255)]&apikey=YOUR_API_KEY"
+  alt="Map with shapes"
+/>
 ```
 
 ### Retina Resolution
 
 ```html
-<img src="https://api.mapy.com/v1/static/map?lon=15.742&lat=50.735&zoom=14&width=200&height=200&scale=2&mapset=outdoor&markers=color:red;size:normal;label:1;15.742,50.735&apikey=YOUR_API_KEY" 
-     alt="High-resolution map" />
+<img
+  src="https://api.mapy.com/v1/static/map?lon=15.742&lat=50.735&zoom=14&width=200&height=200&scale=2&mapset=outdoor&markers=color:red;size:normal;label:1;15.742,50.735&apikey=YOUR_API_KEY"
+  alt="High-resolution map"
+/>
 ```
 
 ## Common Errors and Limits
@@ -111,6 +123,7 @@ Specify `lon` and `lat` twice to define a bounding box:
 - **429 Too Many Requests**: Rate limit exceeded
 
 **Important Notes:**
+
 - Maximum image dimensions: 1024x1024 pixels
 - Images are intended for online display only. Long-term storage or caching is not permitted – see terms of service.
 - For detailed error responses and rate limits, see the [OpenAPI specification](https://api.mapy.com/v1/docs/static/openapi.json) and [Getting Access](getting-access.md).
@@ -121,4 +134,3 @@ Specify `lon` and `lat` twice to define a bounding box:
 - [Map Tiles](map-tiles.md)
 - [Static Panorama](static-panorama.md)
 - [REST API Documentation](README.md)
-

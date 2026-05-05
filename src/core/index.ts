@@ -17,11 +17,7 @@ export type {
   HeatmapPointLike,
   NormalizeHeatmapPointsOptions,
 } from './heatmap';
-export type {
-  BuildPaceSegmentsOptions,
-  PaceColorStop,
-  PaceSegment,
-} from './pacing';
+export type { BuildPaceSegmentsOptions, PaceColorStop, PaceSegment } from './pacing';
 export {
   buildElevationSegments,
   buildHeartRateSegments,

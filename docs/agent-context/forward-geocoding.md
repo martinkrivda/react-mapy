@@ -87,115 +87,129 @@ This example shows integration with the external autocomplete component [autoCom
 ```html
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tarekraafat/autocomplete.js@10.2.7/dist/css/autoComplete.02.min.css">
-</head>
-<body>
+  <head>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@tarekraafat/autocomplete.js@10.2.7/dist/css/autoComplete.02.min.css"
+    />
+  </head>
+  <body>
     <div class="autoComplete_wrapper">
-        <input id="autoComplete" type="search" dir="ltr" spellcheck=false autocorrect="off" autocomplete="off" autocapitalize="off">
+      <input
+        id="autoComplete"
+        type="search"
+        dir="ltr"
+        spellcheck="false"
+        autocorrect="off"
+        autocomplete="off"
+        autocapitalize="off"
+      />
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@tarekraafat/autocomplete.js@10.2.7/dist/autoComplete.min.js"></script>
     <script>
-        const API_KEY = 'YOUR_API_KEY';
-        const inputElem = document.querySelector("#autoComplete");
-        // cache - [key: query] = suggest items
-        const queryCache = {};
-        // get items by query
-        const getItems = async(query) => {
-          if (queryCache[query]) {
-            return queryCache[query];
-          }
-          
-          try {
-            const fetchData = await fetch(`https://api.mapy.cz/v1/suggest?lang=cs&limit=5&type=regional.address&apikey=${API_KEY}&query=${query}`);
-            const jsonData = await fetchData.json();
-            // map values to { value, data }
-            const items = jsonData.items.map(item => ({
-              value: item.name,
-              data: item,
-            }));
-            
-            // save to cache
-            queryCache[query] = items;
-            
-            return items;
-          } catch (exc) {
-            return [];
-          }
-        };
+      const API_KEY = 'YOUR_API_KEY';
+      const inputElem = document.querySelector('#autoComplete');
+      // cache - [key: query] = suggest items
+      const queryCache = {};
+      // get items by query
+      const getItems = async (query) => {
+        if (queryCache[query]) {
+          return queryCache[query];
+        }
 
-        const autoCompleteJS = new autoComplete({
-          selector: () => inputElem,
-          placeHolder: "Enter your address...",
-          searchEngine: (query, record) => `<mark>${record}</mark>`,
-          data: {
-            keys: ["value"],
-            src: async(query) => {
-              // get items for current query
-              const items = await getItems(query);
-              
-              // cache hit? - there is a problem, because this provider needs to get items
-              // for each query and cannot handle different timeouts for different query.
-              // if previous query was completed - it's already in the cache, and some
-              // old query is completed, we test it againts current query and returns correct items.
-              if (queryCache[inputElem.value]) {
-                return queryCache[inputElem.value];
-              }
-              
-              return items;
-            },
-            cache: false,
+        try {
+          const fetchData = await fetch(
+            `https://api.mapy.cz/v1/suggest?lang=cs&limit=5&type=regional.address&apikey=${API_KEY}&query=${query}`,
+          );
+          const jsonData = await fetchData.json();
+          // map values to { value, data }
+          const items = jsonData.items.map((item) => ({
+            value: item.name,
+            data: item,
+          }));
+
+          // save to cache
+          queryCache[query] = items;
+
+          return items;
+        } catch (exc) {
+          return [];
+        }
+      };
+
+      const autoCompleteJS = new autoComplete({
+        selector: () => inputElem,
+        placeHolder: 'Enter your address...',
+        searchEngine: (query, record) => `<mark>${record}</mark>`,
+        data: {
+          keys: ['value'],
+          src: async (query) => {
+            // get items for current query
+            const items = await getItems(query);
+
+            // cache hit? - there is a problem, because this provider needs to get items
+            // for each query and cannot handle different timeouts for different query.
+            // if previous query was completed - it's already in the cache, and some
+            // old query is completed, we test it againts current query and returns correct items.
+            if (queryCache[inputElem.value]) {
+              return queryCache[inputElem.value];
+            }
+
+            return items;
           },
-          resultItem: {
-            element: (item, data) => {
-              const itemData = data.value.data;
-              const desc = document.createElement("div");
-              
-              desc.style = "overflow: hidden; white-space: nowrap; text-overflow: ellipsis;";
-              desc.innerHTML = `${itemData.label}, ${itemData.location}`;
-              item.append(desc);
-            },
-            highlight: true
+          cache: false,
+        },
+        resultItem: {
+          element: (item, data) => {
+            const itemData = data.value.data;
+            const desc = document.createElement('div');
+
+            desc.style = 'overflow: hidden; white-space: nowrap; text-overflow: ellipsis;';
+            desc.innerHTML = `${itemData.label}, ${itemData.location}`;
+            item.append(desc);
           },
-          resultsList: {
-            element: (list, data) => {
-              list.style.maxHeight = "max-content";
-              list.style.overflow = "hidden";
-            
-              if (!data.results.length) {
-                const message = document.createElement("div");
-                
-                message.setAttribute("class", "no_result");
-                message.style = "padding: 5px";
-                message.innerHTML = `<span>Found No Results for "${data.query}"</span>`;
-                list.prepend(message);
-              } else {
-                const logoHolder = document.createElement("div");
-                const text = document.createElement("span");
-                const img = new Image();
-                
-                logoHolder.style = "padding: 5px; display: flex; align-items: center; justify-content: end; gap: 5px; font-size: 12px;";
-                text.textContent = "Powered by";
-                img.src = "https://api.mapy.cz/img/api/logo-small.svg";
-                img.style = "width: 60px";
-                logoHolder.append(text, img);
-                list.append(logoHolder);
-              }
-            },
-            noResults: true,
+          highlight: true,
+        },
+        resultsList: {
+          element: (list, data) => {
+            list.style.maxHeight = 'max-content';
+            list.style.overflow = 'hidden';
+
+            if (!data.results.length) {
+              const message = document.createElement('div');
+
+              message.setAttribute('class', 'no_result');
+              message.style = 'padding: 5px';
+              message.innerHTML = `<span>Found No Results for "${data.query}"</span>`;
+              list.prepend(message);
+            } else {
+              const logoHolder = document.createElement('div');
+              const text = document.createElement('span');
+              const img = new Image();
+
+              logoHolder.style =
+                'padding: 5px; display: flex; align-items: center; justify-content: end; gap: 5px; font-size: 12px;';
+              text.textContent = 'Powered by';
+              img.src = 'https://api.mapy.cz/img/api/logo-small.svg';
+              img.style = 'width: 60px';
+              logoHolder.append(text, img);
+              list.append(logoHolder);
+            }
           },
-        });
-        inputElem.addEventListener("selection", event => {
-            // "event.detail" carries the autoComplete.js "feedback" object
-            // saved data from mapping
-            const origData = event.detail.selection.value.data;
-            // data to debug
-            console.log(origData);
-            inputElem.value = origData.name;
-        });
+          noResults: true,
+        },
+      });
+      inputElem.addEventListener('selection', (event) => {
+        // "event.detail" carries the autoComplete.js "feedback" object
+        // saved data from mapping
+        const origData = event.detail.selection.value.data;
+        // data to debug
+        console.log(origData);
+        inputElem.value = origData.name;
+      });
     </script>
-</body>
+  </body>
 </html>
 ```
 
@@ -213,6 +227,7 @@ This example shows integration with the external autocomplete component [autoCom
 - **500 Internal Server Error**: Server-side error
 
 **Rate Limits:**
+
 - Forward Geocoding (geocode): Maximum 100 requests per second per API key
 - Suggest: Maximum 100 requests per second per API key
 
@@ -226,5 +241,3 @@ For detailed error responses and rate limits, see the [OpenAPI specification](ht
 - [Matrix Routing](matrix-routing.md)
 - [URL Search](../url-mapy/search.md)
 - [REST API Documentation](README.md)
-
-

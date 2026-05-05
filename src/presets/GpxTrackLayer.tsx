@@ -50,7 +50,8 @@ export function GpxTrackLayer({
   weight = 4,
 }: GpxTrackLayerProps): null {
   const map = useLeafletMap();
-  const points = 'segments' in track ? track.segments.flatMap((segment) => segment.points) : track.points;
+  const points =
+    'segments' in track ? track.segments.flatMap((segment) => segment.points) : track.points;
 
   useEffect(() => {
     if (points.length < 2) {

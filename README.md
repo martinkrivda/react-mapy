@@ -253,7 +253,11 @@ const provider = createMapyProvider({
 
 const events = [
   { id: 'evt-1', popupText: 'Morning concert setup', position: { lat: 50.0755, lng: 14.4378 } },
-  { id: 'evt-2', popupText: 'Conference registration opens', position: { lat: 50.0755, lng: 14.4378 } },
+  {
+    id: 'evt-2',
+    popupText: 'Conference registration opens',
+    position: { lat: 50.0755, lng: 14.4378 },
+  },
   { id: 'evt-3', popupText: 'Gallery opening', position: { lat: 50.0762, lng: 14.4404 } },
 ];
 

@@ -55,16 +55,22 @@ curl "https://api.mapy.com/v1/static/pano?apikey=YOUR_API_KEY&lon=16.6&lat=49.19
 
 ```html
 <!-- Basic panorama with default yaw (auto) -->
-<img src="https://api.mapy.com/v1/static/pano?width=400&height=250&lon=16.6&lat=49.19&apikey=YOUR_API_KEY" 
-     alt="Panorama view" />
+<img
+  src="https://api.mapy.com/v1/static/pano?width=400&height=250&lon=16.6&lat=49.19&apikey=YOUR_API_KEY"
+  alt="Panorama view"
+/>
 
 <!-- Panorama with specific yaw direction (north) -->
-<img src="https://api.mapy.com/v1/static/pano?width=400&height=250&lon=16.6&lat=49.19&yaw=0&apikey=YOUR_API_KEY" 
-     alt="Panorama looking north" />
+<img
+  src="https://api.mapy.com/v1/static/pano?width=400&height=250&lon=16.6&lat=49.19&yaw=0&apikey=YOUR_API_KEY"
+  alt="Panorama looking north"
+/>
 
 <!-- Panorama pointing towards coordinates -->
-<img src="https://api.mapy.com/v1/static/pano?width=400&height=250&lon=16.6&lat=49.19&yaw=point&apikey=YOUR_API_KEY" 
-     alt="Panorama pointing to location" />
+<img
+  src="https://api.mapy.com/v1/static/pano?width=400&height=250&lon=16.6&lat=49.19&yaw=point&apikey=YOUR_API_KEY"
+  alt="Panorama pointing to location"
+/>
 ```
 
 ## Understanding Parameters
@@ -82,6 +88,7 @@ curl "https://api.mapy.com/v1/static/pano?apikey=YOUR_API_KEY&lon=16.6&lat=49.19
 ### Pitch (Vertical Angle)
 
 Values in radians (±π):
+
 - `-π` ≈ -3.14 = Looking straight down
 - `0` = Looking at horizon (default)
 - `+π` ≈ 3.14 = Looking straight up
@@ -89,6 +96,7 @@ Values in radians (±π):
 ### Field of View (FOV)
 
 Values in radians:
+
 - `π/2` ≈ 1.57 = Wide angle view (~90°)
 - `1.2` = Default (~69°)
 - `π/20` ≈ 0.157 = Narrow/telephoto view (~9°)
@@ -119,6 +127,7 @@ The `radius` parameter defines how far (in meters) the API will search for the n
 - **422 Unprocessable Entity**: Invalid parameter value or parameter combination
 
 **Limitations:**
+
 - Panoramas are only available for locations where they have been captured
 - Maximum image dimensions: 1024x1024 pixels
 - Coverage is primarily in Czech Republic and selected other areas
@@ -131,4 +140,3 @@ For detailed error responses and rate limits, see the [OpenAPI specification](ht
 - [Getting Access](getting-access.md)
 - [Static Maps](static-maps.md)
 - [REST API Documentation](README.md)
-

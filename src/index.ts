@@ -123,10 +123,6 @@ export type {
   WorldFileTransform,
 } from './parsers';
 export { GpxTrackLayer, StreamTrackLayer, SpeedTrackLayer } from './presets';
-export type {
-  GpxTrackLayerProps,
-  StreamTrackLayerProps,
-  SpeedTrackLayerProps,
-} from './presets';
+export type { GpxTrackLayerProps, StreamTrackLayerProps, SpeedTrackLayerProps } from './presets';
 export { createMapyProvider, mapyProvider } from './providers/mapy';
 export type { MapyProviderOptions, MapyProxyOptions, MapyVariant } from './providers/mapy';

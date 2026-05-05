@@ -62,9 +62,7 @@ export function HeatmapLayer({
       return;
     }
 
-    const pane =
-      map.getPane(paneName) ??
-      map.createPane(paneName, container);
+    const pane = map.getPane(paneName) ?? map.createPane(paneName, container);
 
     if (!(pane instanceof HTMLElement)) {
       return;

@@ -71,12 +71,7 @@ Both `timezone` and `coordinate` endpoints return detailed timezone information:
 
 ```json
 {
-  "timezones": [
-    "Africa/Abidjan",
-    "Africa/Accra",
-    "Europe/Prague",
-    "America/New_York"
-  ]
+  "timezones": ["Africa/Abidjan", "Africa/Accra", "Europe/Prague", "America/New_York"]
 }
 ```
 
@@ -102,103 +97,106 @@ This example demonstrates how to get timezone information by clicking on the map
 ```html
 <!DOCTYPE html>
 <html>
-<head>
+  <head>
     <meta charset="utf-8" />
     <title>Timezone Information</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <style>
-        #map { height: 500px; }
+      #map {
+        height: 500px;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div id="map"></div>
     <script>
-        const API_KEY = 'YOUR_API_KEY';
-        const map = L.map('map').setView([49.8729317, 14.8981184], 3);
+      const API_KEY = 'YOUR_API_KEY';
+      const map = L.map('map').setView([49.8729317, 14.8981184], 3);
 
-        L.tileLayer(`https://api.mapy.com/v1/maptiles/basic/256/{z}/{x}/{y}?apikey=${API_KEY}`, {
-            attribution: '<a href="https://api.mapy.com/copyright" target="_blank">&copy; Seznam.cz a.s. a další</a>',
-        }).addTo(map);
+      L.tileLayer(`https://api.mapy.com/v1/maptiles/basic/256/{z}/{x}/{y}?apikey=${API_KEY}`, {
+        attribution:
+          '<a href="https://api.mapy.com/copyright" target="_blank">&copy; Seznam.cz a.s. a další</a>',
+      }).addTo(map);
 
-        const LogoControl = L.Control.extend({
-            options: { position: 'bottomleft' },
-            onAdd: function (map) {
-                const container = L.DomUtil.create('div');
-                const link = L.DomUtil.create('a', '', container);
-                link.setAttribute('href', 'http://mapy.com/');
-                link.setAttribute('target', '_blank');
-                link.innerHTML = '<img src="https://api.mapy.com/img/api/logo.svg" />';
-                L.DomEvent.disableClickPropagation(link);
-                return container;
-            },
-        });
-        new LogoControl().addTo(map);
+      const LogoControl = L.Control.extend({
+        options: { position: 'bottomleft' },
+        onAdd: function (map) {
+          const container = L.DomUtil.create('div');
+          const link = L.DomUtil.create('a', '', container);
+          link.setAttribute('href', 'http://mapy.com/');
+          link.setAttribute('target', '_blank');
+          link.innerHTML = '<img src="https://api.mapy.com/img/api/logo.svg" />';
+          L.DomEvent.disableClickPropagation(link);
+          return container;
+        },
+      });
+      new LogoControl().addTo(map);
 
-        function formatUtcOffset(offsetSeconds) {
-            const sign = offsetSeconds >= 0 ? '+' : '-';
-            const absOffset = Math.abs(offsetSeconds);
-            const hours = Math.floor(absOffset / 3600);
-            const minutes = Math.floor((absOffset % 3600) / 60);
-            return `${sign}${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
-        }
+      function formatUtcOffset(offsetSeconds) {
+        const sign = offsetSeconds >= 0 ? '+' : '-';
+        const absOffset = Math.abs(offsetSeconds);
+        const hours = Math.floor(absOffset / 3600);
+        const minutes = Math.floor((absOffset % 3600) / 60);
+        return `${sign}${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
+      }
 
-        map.on('click', function (e) {
-            const lat = e.latlng.lat;
-            const lon = e.latlng.lng;
-            const url = `https://api.mapy.com/v1/timezone/coordinate?lon=${lon}&lat=${lat}&lang=cs&apikey=${API_KEY}`;
+      map.on('click', function (e) {
+        const lat = e.latlng.lat;
+        const lon = e.latlng.lng;
+        const url = `https://api.mapy.com/v1/timezone/coordinate?lon=${lon}&lat=${lat}&lang=cs&apikey=${API_KEY}`;
 
-            fetch(url)
-                .then(response => response.json())
-                .then(data => {
-                    const localTime = new Date(data.timezone.currentLocalTime);
-                    const formattedTime = localTime.toLocaleString('cs-CZ', {
-                        year: 'numeric',
-                        month: '2-digit',
-                        day: '2-digit',
-                        hour: '2-digit',
-                        minute: '2-digit',
-                        hour12: false,
-                    });
-                    const utcOffset = formatUtcOffset(data.timezone.currentUtcOffsetSeconds);
-                    
-                    const popupContent = `
+        fetch(url)
+          .then((response) => response.json())
+          .then((data) => {
+            const localTime = new Date(data.timezone.currentLocalTime);
+            const formattedTime = localTime.toLocaleString('cs-CZ', {
+              year: 'numeric',
+              month: '2-digit',
+              day: '2-digit',
+              hour: '2-digit',
+              minute: '2-digit',
+              hour12: false,
+            });
+            const utcOffset = formatUtcOffset(data.timezone.currentUtcOffsetSeconds);
+
+            const popupContent = `
                         Local time: <strong>${formattedTime}</strong><br>
                         TimeZone: <strong>${data.timezone.timezoneName}</strong><br>
                         UTC offset: <strong>${utcOffset}</strong>
                     `;
-                    
-                    L.popup().setLatLng(e.latlng).setContent(popupContent).openOn(map);
-                })
-                .catch(error => {
-                    console.error('Error fetching timezone data:', error);
-                });
-        });
+
+            L.popup().setLatLng(e.latlng).setContent(popupContent).openOn(map);
+          })
+          .catch((error) => {
+            console.error('Error fetching timezone data:', error);
+          });
+      });
     </script>
-</body>
+  </body>
 </html>
 ```
 
 ## Response Fields
 
-| Field | Description |
-|-------|-------------|
-| `timezoneName` | IANA timezone name (e.g., "Europe/Prague") |
-| `currentTimeAbbreviation` | Current timezone abbreviation (e.g., "CEST") |
-| `standardTimeAbbreviation` | Standard time abbreviation (e.g., "CET") |
-| `currentLocalTime` | Current local time in ISO 8601 format |
-| `currentUtcTime` | Current UTC time in ISO 8601 format |
-| `currentUtcOffsetSeconds` | Current UTC offset in seconds |
-| `standardUtcOffsetSeconds` | Standard UTC offset in seconds |
-| `hasDst` | Whether timezone uses daylight saving time |
-| `isDstActive` | Whether daylight saving time is currently active |
-| `dstInfo.dstAbbreviation` | Daylight saving time abbreviation |
-| `dstInfo.dstStartUtcTime` | UTC time when DST starts |
-| `dstInfo.dstStartLocalTime` | Local time when DST starts |
-| `dstInfo.dstEndUtcTime` | UTC time when DST ends |
-| `dstInfo.dstEndLocalTime` | Local time when DST ends |
-| `dstInfo.dstOffsetSeconds` | DST offset from standard time in seconds |
-| `dstInfo.dstDurationSeconds` | DST duration in seconds |
+| Field                        | Description                                      |
+| ---------------------------- | ------------------------------------------------ |
+| `timezoneName`               | IANA timezone name (e.g., "Europe/Prague")       |
+| `currentTimeAbbreviation`    | Current timezone abbreviation (e.g., "CEST")     |
+| `standardTimeAbbreviation`   | Standard time abbreviation (e.g., "CET")         |
+| `currentLocalTime`           | Current local time in ISO 8601 format            |
+| `currentUtcTime`             | Current UTC time in ISO 8601 format              |
+| `currentUtcOffsetSeconds`    | Current UTC offset in seconds                    |
+| `standardUtcOffsetSeconds`   | Standard UTC offset in seconds                   |
+| `hasDst`                     | Whether timezone uses daylight saving time       |
+| `isDstActive`                | Whether daylight saving time is currently active |
+| `dstInfo.dstAbbreviation`    | Daylight saving time abbreviation                |
+| `dstInfo.dstStartUtcTime`    | UTC time when DST starts                         |
+| `dstInfo.dstStartLocalTime`  | Local time when DST starts                       |
+| `dstInfo.dstEndUtcTime`      | UTC time when DST ends                           |
+| `dstInfo.dstEndLocalTime`    | Local time when DST ends                         |
+| `dstInfo.dstOffsetSeconds`   | DST offset from standard time in seconds         |
+| `dstInfo.dstDurationSeconds` | DST duration in seconds                          |
 
 ## Use Cases
 
@@ -219,6 +217,7 @@ This example demonstrates how to get timezone information by clicking on the map
 - **429 Too Many Requests**: Rate limit exceeded
 
 **Limitations:**
+
 - Maximum rate limit: 300 requests per second per API key
 - Timezone information is based on IANA timezone database
 

@@ -54,7 +54,9 @@ const MAPY_SUPPORTED_VARIANTS = [
 /**
  * Creates a configured Mapy.com tile provider.
  */
-export function createMapyProvider(options: Partial<MapyProviderOptions> = {}): TileProvider<MapyProviderOptions> {
+export function createMapyProvider(
+  options: Partial<MapyProviderOptions> = {},
+): TileProvider<MapyProviderOptions> {
   const config = {
     maxZoom: options.maxZoom ?? 19,
     minZoom: options.minZoom ?? 0,
@@ -160,10 +162,7 @@ interface PlaceholderTileCoordinates {
   z: '{z}';
 }
 
-function appendQueryParams(
-  url: string,
-  query: MapyProxyOptions['query'],
-): string {
+function appendQueryParams(url: string, query: MapyProxyOptions['query']): string {
   if (!query || Object.keys(query).length === 0) {
     return url;
   }

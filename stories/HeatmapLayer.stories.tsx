@@ -1,12 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
-import {
-  HeatmapLayer,
-  LeafletMap,
-  MapTileLayer,
-  MarkerLayer,
-  StreamTrackLayer,
-} from '../src';
+import { HeatmapLayer, LeafletMap, MapTileLayer, MarkerLayer, StreamTrackLayer } from '../src';
 import { createMapyProvider } from '../src/providers/mapy';
 import {
   historicalEventHeatmapPoints,
@@ -33,7 +27,11 @@ function EventHeatmapStory({ apiKey }: HeatmapStoryProps) {
       <LeafletMap center={pragueCenter} zoom={13}>
         {provider ? <MapTileLayer provider={provider} /> : null}
         <HeatmapLayer points={historicalEventHeatmapPoints} radius={28} />
-        <MarkerLayer popupText="Current event" position={pragueCenter} tooltipText="Current event" />
+        <MarkerLayer
+          popupText="Current event"
+          position={pragueCenter}
+          tooltipText="Current event"
+        />
       </LeafletMap>
     </StoryFrame>
   );

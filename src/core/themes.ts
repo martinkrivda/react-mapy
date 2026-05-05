@@ -58,7 +58,8 @@ const MAP_THEME_PRESETS = Object.freeze({
     popupBorderColor: 'rgba(244, 244, 245, 0.12)',
     popupColor: '#fafafa',
     popupShadow: '0 24px 56px rgba(0, 0, 0, 0.52)',
-    tileFilter: 'invert(0.92) hue-rotate(180deg) brightness(0.7) saturate(0.32) contrast(0.9) grayscale(0.15)',
+    tileFilter:
+      'invert(0.92) hue-rotate(180deg) brightness(0.7) saturate(0.32) contrast(0.9) grayscale(0.15)',
     tileOpacity: 0.92,
   },
   mapbox: {

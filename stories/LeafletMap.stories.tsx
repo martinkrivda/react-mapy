@@ -13,7 +13,12 @@ import { polylinePath, pragueCenter, sampleClusteredEvents, sampleGeoJson } from
 import { storybookMapyApiKey } from './mapyApiKey';
 import { StoryFrame } from './StoryFrame';
 
-const presetThemes = ['mapy', 'dark', 'neutral', 'mapbox'] as const satisfies readonly MapThemePreset[];
+const presetThemes = [
+  'mapy',
+  'dark',
+  'neutral',
+  'mapbox',
+] as const satisfies readonly MapThemePreset[];
 
 interface PresetThemeStoryProps {
   apiKey: string;
@@ -169,7 +174,8 @@ export const MapyTheme: PresetThemeStory = {
   parameters: {
     docs: {
       description: {
-        story: 'Default preset. Closest to the native Mapy.com feel and the recommended baseline for Mapy-backed applications.',
+        story:
+          'Default preset. Closest to the native Mapy.com feel and the recommended baseline for Mapy-backed applications.',
       },
     },
   },

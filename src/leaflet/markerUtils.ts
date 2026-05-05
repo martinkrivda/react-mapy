@@ -11,11 +11,7 @@ import { renderToStaticMarkup } from 'react-dom/server';
 
 import { toLatLngTuple } from '../core/geometry';
 import type { GeoPointLike } from '../core/types';
-import {
-  markerPresets,
-  type MarkerColorScheme,
-  type MarkerPreset,
-} from './markerPresets';
+import { markerPresets, type MarkerColorScheme, type MarkerPreset } from './markerPresets';
 
 export type MarkerIconSize = number | readonly [width: number, height: number];
 export type MarkerIconSizeResolver = (zoom: number) => MarkerIconSize;
@@ -111,11 +107,7 @@ function sizePropsForIcon([width, height]: readonly [number, number]): Record<st
   return { height, width };
 }
 
-function wrapIconHtml(
-  html: string,
-  _size: readonly [number, number],
-  className?: string,
-): string {
+function wrapIconHtml(html: string, _size: readonly [number, number], className?: string): string {
   const style = [
     'align-items:center',
     'display:flex',
@@ -195,10 +187,7 @@ function escapeHtml(value: string): string {
     .replaceAll('>', '&gt;');
 }
 
-function buildAssetIconHtml(
-  assetSrc: string,
-  [width, height]: readonly [number, number],
-): string {
+function buildAssetIconHtml(assetSrc: string, [width, height]: readonly [number, number]): string {
   return `<img alt="" class="react-mapy-marker-icon__asset" draggable="false" height="${height}" src="${escapeHtml(assetSrc)}" style="display:block;height:100%;width:100%;" width="${width}" />`;
 }
 
@@ -230,15 +219,18 @@ export function buildCustomMarkerIcon(icon: MarkerCustomIcon, zoom?: number) {
   });
 }
 
-export function createLeafletMarker({
-  customIcon,
-  markerOptions,
-  popupContent,
-  popupText,
-  position,
-  tooltipContent,
-  tooltipText,
-}: MarkerDefinition, zoom?: number): Marker {
+export function createLeafletMarker(
+  {
+    customIcon,
+    markerOptions,
+    popupContent,
+    popupText,
+    position,
+    tooltipContent,
+    tooltipText,
+  }: MarkerDefinition,
+  zoom?: number,
+): Marker {
   const icon = customIcon ? buildCustomMarkerIcon(customIcon, zoom) : undefined;
   const nextMarkerOptions = icon
     ? {
@@ -248,7 +240,9 @@ export function createLeafletMarker({
     : markerOptions;
   const layer = marker(toLatLngTuple(position), nextMarkerOptions);
 
-  const resolvedPopupContent = popupContent ? renderOverlayContent(popupContent) : popupText ?? null;
+  const resolvedPopupContent = popupContent
+    ? renderOverlayContent(popupContent)
+    : (popupText ?? null);
 
   if (resolvedPopupContent) {
     layer.bindPopup(resolvedPopupContent);
@@ -256,7 +250,7 @@ export function createLeafletMarker({
 
   const resolvedTooltipContent = tooltipContent
     ? renderOverlayContent(tooltipContent)
-    : tooltipText ?? null;
+    : (tooltipText ?? null);
 
   if (resolvedTooltipContent) {
     layer.bindTooltip(resolvedTooltipContent);

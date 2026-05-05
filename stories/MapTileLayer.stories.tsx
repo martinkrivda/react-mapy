@@ -40,11 +40,7 @@ function MapyTileLayerStory({ apiKey, variant }: MapyStoryProps) {
   );
 }
 
-function MapyProxyTileLayerStory({
-  language,
-  proxyUrlTemplate,
-  variant,
-}: MapyProxyStoryProps) {
+function MapyProxyTileLayerStory({ language, proxyUrlTemplate, variant }: MapyProxyStoryProps) {
   const provider = createMapyProvider({
     ...(language ? { language } : {}),
     proxy: {

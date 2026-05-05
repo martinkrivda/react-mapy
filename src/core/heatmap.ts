@@ -55,7 +55,9 @@ export function normalizeHeatmapPoints(
   return points.map((point) => {
     const normalized = toGeoPoint(point);
     const intensity =
-      'intensity' in point && typeof point.intensity === 'number' && Number.isFinite(point.intensity)
+      'intensity' in point &&
+      typeof point.intensity === 'number' &&
+      Number.isFinite(point.intensity)
         ? point.intensity
         : defaultIntensity;
 

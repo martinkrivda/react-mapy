@@ -131,7 +131,10 @@ function parseTrack(node: Record<string, unknown>, options: ParseGpxOptions): Gp
   } as GpxTrack;
 }
 
-function parseTrackSegment(node: Record<string, unknown>, options: ParseGpxOptions): GpxTrackSegment {
+function parseTrackSegment(
+  node: Record<string, unknown>,
+  options: ParseGpxOptions,
+): GpxTrackSegment {
   const points = toArray(node.trkpt)
     .map(asRecord)
     .flatMap((trackPoint) => (trackPoint ? [parseTrackPoint(trackPoint, options)] : []));
@@ -212,12 +215,7 @@ function parseBounds(node?: Record<string, unknown>): GeoBounds | undefined {
   const north = parseNumber(node.maxlat);
   const east = parseNumber(node.maxlon);
 
-  if (
-    south === undefined ||
-    west === undefined ||
-    north === undefined ||
-    east === undefined
-  ) {
+  if (south === undefined || west === undefined || north === undefined || east === undefined) {
     return undefined;
   }
 
