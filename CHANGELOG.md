@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.2.1
+
+### Patch Changes
+
+### patch
+
+- stabilize markercluster runtime loading in ESM
+
 ## 0.2.0
 
 ### Minor Changes
