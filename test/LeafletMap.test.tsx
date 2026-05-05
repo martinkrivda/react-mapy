@@ -262,6 +262,25 @@ vi.mock('leaflet', () => ({
   markerClusterGroup: leafletMocks.markerClusterGroupMock,
   polyline: leafletMocks.polylineMock,
   tileLayer: leafletMocks.tileLayerMock,
+  default: {
+    Control: leafletMocks.ControlMock,
+    DomEvent: {
+      disableClickPropagation: leafletMocks.domDisableClickPropagation,
+      disableScrollPropagation: leafletMocks.domDisableScrollPropagation,
+    },
+    DomUtil: {
+      create: leafletMocks.domCreate,
+    },
+    divIcon: leafletMocks.divIconMock,
+    featureGroup: leafletMocks.featureGroupMock,
+    geoJSON: leafletMocks.geoJsonMock,
+    imageOverlay: leafletMocks.imageOverlayMock,
+    map: leafletMocks.mapMock,
+    marker: leafletMocks.markerMock,
+    markerClusterGroup: leafletMocks.markerClusterGroupMock,
+    polyline: leafletMocks.polylineMock,
+    tileLayer: leafletMocks.tileLayerMock,
+  },
 }));
 
 import {
