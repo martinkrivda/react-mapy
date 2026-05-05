@@ -1,22 +1,33 @@
-import * as Leaflet from 'leaflet';
-
-type LeafletGlobalRuntime = typeof globalThis & {
-  L?: typeof Leaflet;
-};
+import {
+  getLeafletGlobalRuntime,
+  getMutableLeafletRuntime,
+  syncMarkerClusterApi,
+} from './markerClusterRuntime';
 
 /**
  * Loads the optional Leaflet.markercluster plugin in ESM hosts such as Vite.
  *
- * The plugin's UMD bundle expects a global `L` reference during evaluation,
- * so this helper assigns the current Leaflet runtime to `globalThis.L`
- * before importing the plugin.
+ * The plugin's UMD/CommonJS bundle expects a mutable global Leaflet runtime
+ * during evaluation, so this helper exposes Leaflet's default runtime before
+ * importing the plugin and mirrors any attached cluster APIs back afterward.
  */
 export async function loadLeafletMarkerCluster(): Promise<void> {
-  const runtime = globalThis as LeafletGlobalRuntime;
+  const runtime = getLeafletGlobalRuntime();
+  const leafletRuntime = getMutableLeafletRuntime();
 
-  if (runtime.L !== Leaflet) {
-    runtime.L = Leaflet;
+  if (runtime) {
+    runtime.L = leafletRuntime;
+    runtime.Leaflet = leafletRuntime;
   }
 
   await import('leaflet.markercluster');
+
+  syncMarkerClusterApi(leafletRuntime, runtime?.L);
+  syncMarkerClusterApi(leafletRuntime, runtime?.Leaflet);
+
+  if (!leafletRuntime.markerClusterGroup) {
+    throw new Error(
+      'Leaflet.markercluster loaded, but markerClusterGroup is unavailable on the Leaflet runtime.',
+    );
+  }
 }
