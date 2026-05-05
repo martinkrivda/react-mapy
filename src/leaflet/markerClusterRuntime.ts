@@ -19,11 +19,11 @@ export function getLeafletGlobalRuntime(): LeafletGlobalRuntime | undefined {
     return undefined;
   }
 
-  return globalThis as LeafletGlobalRuntime;
+  return globalThis;
 }
 
 export function getMutableLeafletRuntime(): LeafletWithMarkerCluster {
-  return (LeafletDefault ?? LeafletNamespace) as LeafletWithMarkerCluster;
+  return (LeafletDefault ?? LeafletNamespace);
 }
 
 export function syncMarkerClusterApi(
